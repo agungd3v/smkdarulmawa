@@ -34,6 +34,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/', 'AdminController@index')->name('admin.dashboard');
         Route::get('/guru', 'AdminController@guru')->name('admin.guru');
         Route::get('/siswa', 'AdminController@siswa')->name('admin.siswa');
+        Route::get('/pelajaran', 'AdminController@pelajaran')->name('admin.pelajaran');
+        Route::get('/absen', 'AdminController@absen')->name('admin.absen');
+        Route::get('/nilai', 'AdminController@nilai')->name('admin.nilai');
     });
     // End Controller dashboard admin
 

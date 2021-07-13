@@ -18,4 +18,16 @@ class AdminController extends Controller
     public function siswa() {
         return view('dashboard.admin.siswa');
     }
+
+    public function pelajaran() {
+        return view('dashboard.admin.pelajaran');
+    }
+
+    public function absen() {
+        return view('dashboard.admin.absen');
+    }
+
+    public function nilai() {
+        return view('dashboard.admin.nilai');
+    }
 }

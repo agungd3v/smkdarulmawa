@@ -35,14 +35,32 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link @yield('guru')" href="{{ route('admin.guru') }}">
-                      <i class="ni ni-user-run text-orange"></i>
-                      <span class="nav-link-text">Guru</span>
+                      <i class="ni ni-briefcase-24 text-success"></i>
+                      <span class="nav-link-text">Data Guru</span>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link @yield('siswa')" href="{{ route('admin.siswa') }}">
-                      <i class="ni ni-briefcase-24 text-success"></i>
-                      <span class="nav-link-text">Siswa</span>
+                      <i class="ni ni-hat-3 text-warning"></i>
+                      <span class="nav-link-text">Data Siswa</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('pelajaran')" href="{{ route('admin.pelajaran') }}">
+                      <i class="ni ni-books text-danger"></i>
+                      <span class="nav-link-text">Data Pelajaran</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('absen')" href="{{ route('admin.absen') }}">
+                      <i class="ni ni-check-bold text-info"></i>
+                      <span class="nav-link-text">Data Absen</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('nilai')" href="{{ route('admin.nilai') }}">
+                      <i class="ni ni-paper-diploma text-default"></i>
+                      <span class="nav-link-text">Data Nilai</span>
                     </a>
                   </li>
                 @endif
