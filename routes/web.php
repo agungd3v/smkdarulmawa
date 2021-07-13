@@ -19,7 +19,35 @@ Route::get('/', function () {
 });
 
 Auth::routes([
-    'register' => false
+    'register' => false,
+    'reset' => false,
+    'verify' => false,
 ]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
+    // Controller check role & redirect user login as role
+    Route::get('/', 'DashboardController@index');
+    // End Controller check role & redirect user login as role
+
+    // Controller dashboard admin
+    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
+        Route::get('/', 'AdminController@index')->name('admin.dashboard');
+        Route::get('/guru', 'AdminController@guru')->name('admin.guru');
+        Route::get('/siswa', 'AdminController@siswa')->name('admin.siswa');
+    });
+    // End Controller dashboard admin
+
+    // Controller dashboard guru
+    Route::group(['prefix' => 'guru', 'middleware' => 'guru'], function() {
+        Route::get('/', 'GuruController@index')->name('guru.dashboard');
+    });
+    // End Controller dashboard guru
+
+    // Controller dashboard siswa
+    Route::group(['prefix' => 'siswa', 'middleware' => 'siswa'], function() {
+        Route::get('/', 'SiswaController@index')->name('siswa.dashboard');
+    });
+    // End Controller dashboard siswa
+});
+
+// Route::get('/home', 'HomeController@index')->name('home');
