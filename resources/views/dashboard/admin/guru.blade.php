@@ -18,7 +18,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col" class="sort" data-sort="name">Nama Guru</th>
-              <th scope="col" class="sort" data-sort="nik">NIK</th>
+              <th scope="col" class="sort" data-sort="nik">NIDN</th>
               <th scope="col" class="sort" data-sort="email">Alamat Email</th>
               <th scope="col"></th>
             </tr>
