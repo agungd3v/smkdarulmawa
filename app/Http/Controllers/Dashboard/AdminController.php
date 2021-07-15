@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
+use App\Pelajaran;
 
 class AdminController extends Controller
 {
@@ -185,9 +186,68 @@ class AdminController extends Controller
     }
     // End Siswa
 
+    // Pelajaran
     public function pelajaran() {
-        return view('dashboard.admin.pelajaran');
+        $pelajarans = Pelajaran::orderBy('id', 'desc')->paginate(10);
+        $gurus = User::where('role', 'guru')->orderBy('name', 'asc')->get();
+        return view('dashboard.admin.pelajaran', compact('gurus', 'pelajarans'));
     }
+
+    public function pelajaranPost(Request $request) {
+        $request->validate([
+            'kode' => 'required|unique:pelajarans,kode_pelajaran',
+            'name' => 'required',
+            'pengajar' => 'required',
+            'waktu' => 'required'
+        ]);
+
+        $pelajaran = new Pelajaran();
+        $pelajaran->kode_pelajaran = $request->kode;
+        $pelajaran->nama_pelajaran = $request->name;
+        $pelajaran->guru_id = intval($request->pengajar);
+        $pelajaran->jam = intval($request->waktu);
+        $pelajaran->save();
+
+        return redirect()->route('admin.pelajaran')->with('berhasil', 'Pelajaran '. $request->name .' berhasil ditambahkan');
+    }
+
+    public function pelajaranUpdate(Request $request) {
+        $request->validate([
+            'kode' => 'required',
+            'name' => 'required',
+            'pengajar' => 'required',
+            'waktu' => 'required'
+        ]);
+
+        $pelajaran = Pelajaran::where('id', $request->id)->first();
+        $pelajaran->kode_pelajaran = $request->kode;
+        $pelajaran->nama_pelajaran = $request->name;
+        $pelajaran->guru_id = intval($request->pengajar);
+        $pelajaran->jam = intval($request->waktu);
+
+        $checkKode = Pelajaran::where('kode_pelajaran', $request->kode)->first();
+        if ($checkKode) {
+            if ($checkKode->id != $pelajaran->id) {
+                return redirect()->route('admin.pelajaran')->with('errorMessage', 'Kode pelajaran telah terdaftar');
+            }
+        }
+
+        $pelajaran->save();
+
+        return redirect()->route('admin.pelajaran')->with('berhasil', 'Pelajaran '. $request->name .' berhasil diperbarui');
+    }
+
+    public function pelajaranDelete(Request $request) {
+        $pelajaran = Pelajaran::where('id', $request->id)->first();
+        if (!$pelajaran) {
+            return redirect()->route('admin.pelajaran')->with('errorMessage', 'Kamu siapa ?');
+        }
+
+        $pelajaran->delete();
+
+        return redirect()->route('admin.pelajaran')->with('berhasil', 'Pelajaran '. $pelajaran->nama_pelajaran .' berhasil dihapus');
+    }
+    // End Pelajaran
 
     public function absen() {
         return view('dashboard.admin.absen');

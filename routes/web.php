@@ -51,6 +51,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
 
         // Pelajaran Crud
         Route::get('/pelajaran', 'AdminController@pelajaran')->name('admin.pelajaran');
+        Route::post('/pelajaran', 'AdminController@pelajaranPost')->name('admin.pelajaran.post');
+        Route::post('/pelajaran/update', 'AdminController@pelajaranUpdate')->name('admin.pelajaran.update');
+        Route::post('/pelajaran/delete', 'AdminController@pelajaranDelete')->name('admin.pelajaran.delete');
         // End Pelajaran Crud
 
         // Absen Crud

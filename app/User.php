@@ -38,4 +38,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function pelajaran() {
+        return $this->hasMany(Pelajaran::class, 'guru_id', 'id');
+    }
 }
