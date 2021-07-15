@@ -3,13 +3,29 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="icon" href="{{ asset('assets/img/brand/favicon.png') }}" type="image/png">
         <title>SMK Darul Mawa</title>
-
-        <!-- Fonts -->
+        <meta name="keywords" content="SMK Darul Mawa | E-Learning"/>
+        <meta name="description" content="E-Learning untuk siswa siswi SMK Darul Mawa"/>
+        <meta name="language" content="ES">
+        <meta name="robots" content="index,follow" />
+        <meta name="author" content="SMK Darul Mawa, admin@smkdarulmawa.com">
+        <meta name="url" content="http://www.smkdarulmawa.com">
+        <meta name="identifier-URL" content="http://www.smkdarulmawa.com">
+        <meta name="coverage" content="Worldwide">
+        <meta name="distribution" content="Global">
+        <meta name="rating" content="General">
+        <meta name="revisit-after" content="7 days">
+        <meta http-equiv="Expires" content="0">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <meta name="og:title" content="SMK Darul Mawa | E-Learning"/>
+        <meta name="og:type" content="website"/>
+        <meta name="og:url" content="http://www.smkdarulmawa.com/"/>
+        <meta name="og:image" content="{{ asset('assets/img/brand/favicon.png') }}"/>
+        <meta name="og:site_name" content="SMK Darul Mawa"/>
+        <meta name="og:description" content="E-Learning untuk siswa siswi SMK Darul Mawa"/>
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
