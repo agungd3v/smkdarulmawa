@@ -32,10 +32,31 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
     // Controller dashboard admin
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
         Route::get('/', 'AdminController@index')->name('admin.dashboard');
+        
+        // Guru Crud
         Route::get('/guru', 'AdminController@guru')->name('admin.guru');
+        Route::post('/guru', 'AdminController@guruPost')->name('admin.guru.post');
+        Route::post('/guru/update', 'AdminController@guruUpdate')->name('admin.guru.update');
+        Route::post('/guru/delete', 'AdminController@gutuDelete')->name('admin.guru.delete');
+        Route::post('/guru/resetpassword', 'AdminController@guruResetPassword')->name('admin.guru.resetpassword');
+        // End Guru Crud
+        
+        // Siswa Crud
         Route::get('/siswa', 'AdminController@siswa')->name('admin.siswa');
+        Route::post('/siswa', 'AdminController@siswaPost')->name('admin.siswa.post');
+        Route::post('/siswa/update', 'AdminController@siswaUpdate')->name('admin.siswa.update');
+        Route::post('/siswa/delete', 'AdminController@siswaDelete')->name('admin.siswa.delete');
+        Route::post('/siswa/resetpassword', 'AdminController@siswaResetPassword')->name('admin.siswa.resetpassword');
+        // End Siswa Crud
+
+        // Pelajaran Crud
         Route::get('/pelajaran', 'AdminController@pelajaran')->name('admin.pelajaran');
+        // End Pelajaran Crud
+
+        // Absen Crud
         Route::get('/absen', 'AdminController@absen')->name('admin.absen');
+        // End Absen Crud
+
         Route::get('/nilai', 'AdminController@nilai')->name('admin.nilai');
     });
     // End Controller dashboard admin

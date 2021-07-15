@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@smkdarulmawa.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('smkdarulmawa'),
             'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now()

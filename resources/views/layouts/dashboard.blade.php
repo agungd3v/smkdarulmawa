@@ -131,7 +131,7 @@
                       <span>My profile</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="javascript:void(0)" class="dropdown-item" href="{{ route('logout') }}" onclick="document.getElementById('logout-form').submit();">
+                    <a href="javascript:void(0)" class="dropdown-item" onclick="document.getElementById('logout-form').submit();">
                       <i class="ni ni-user-run"></i>
                       <span>Logout</span>
                     </a>
