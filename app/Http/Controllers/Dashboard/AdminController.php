@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
 use App\Pelajaran;
+use App\Jadwal;
 
 class AdminController extends Controller
 {
@@ -248,6 +249,112 @@ class AdminController extends Controller
         return redirect()->route('admin.pelajaran')->with('berhasil', 'Pelajaran '. $pelajaran->nama_pelajaran .' berhasil dihapus');
     }
     // End Pelajaran
+
+    // Jadwal
+    public function jadwal() {
+        $jadwals = Jadwal::with(['pelajaran'])->get();
+        $pelajarans = Pelajaran::orderBy('nama_pelajaran', 'asc')->get();
+        return view('dashboard.admin.jadwal', compact('jadwals', 'pelajarans'));
+    }
+
+    public function jadwalPost(Request $request) {
+        if ($request->identity) {
+            if ($request->identity == 'jadwal_hari') {
+                $request->validate([
+                    'name' => 'required|unique:jadwals,nama_hari',
+                    'masuk' => 'required',
+                    'pulang' => 'required'
+                ]);
+        
+                $jadwal = new Jadwal();
+                $jadwal->nama_hari = $request->name;
+                $jadwal->jam_masuk = $request->masuk;
+                $jadwal->jam_pulang = $request->pulang;
+                $jadwal->save();
+
+                return redirect()->route('admin.jadwal')->with('berhasil', 'Jadwal hari '. $request->name .' berhasil diset');
+            }
+            if ($request->identity == 'jadwal_pelajaran') {
+                $request->validate([
+                    'jadwal_hari' => 'required',
+                    'pelajaran' => 'required',
+                    'jam_masuk' => 'required',
+                    'jam_pulang' => 'required'
+                ]);
+
+                $pelajaran = Pelajaran::where('id', $request->pelajaran)->first();
+
+                $jadwal = json_decode($request->jadwal_hari);
+                $jadwal = Jadwal::where('id', $jadwal->id)->first();
+                $jadwal->pelajaran()->attach($pelajaran->id, ['jam_masuk' => $request->jam_masuk, 'jam_pulang' => $request->jam_pulang]);
+                
+                return redirect()->route('admin.jadwal')
+                                 ->with('berhasil', 'Pelajaran '. $pelajaran->nama_pelajaran .' berhasil ditambahkan ke hari '. $jadwal->nama_hari);
+            }
+        } else {
+            return redirect()->route('admin.jadwal')->with('errorMessage', 'Sistem tidak mengetahui apa yang ingin kamu lakukan!');
+        }
+    }
+
+    public function jadwalUpdate(Request $request) {
+        if ($request->identity) {
+            $jadwal = Jadwal::where('id', $request->id)->first();
+
+            if ($request->identity == 'jadwal_hari') {
+                $jadwal->jam_masuk = $request->masuk;
+                $jadwal->jam_pulang = $request->pulang;
+                $jadwal->save();
+
+                return redirect()->route('admin.jadwal')->with('berhasil', 'Jadwal hari '. $jadwal->nama_hari .' berhasil diperbarui');
+            }
+
+            if ($request->identity == 'jadwal_pelajaran') {
+                $jadwal->pelajaran()->updateExistingPivot($request->pelajaran_id, [
+                    'jam_masuk' => $request->jam_masuk,
+                    'jam_pulang' => $request->jam_pulang
+                ]);
+                
+                $dataPelajaran = null;
+                foreach ($jadwal->pelajaran as $key => $pelajaran) {
+                    if ($pelajaran->id == $request->pelajaran_id) $dataPelajaran = $pelajaran;
+                }
+
+                return redirect()->route('admin.jadwal')->with('berhasil', 'Waktu pelajaran '. $dataPelajaran->nama_pelajaran .' berhasil diperbarui');
+            }
+        } else {
+            return redirect()->route('admin.jadwal')->with('errorMessage', 'Sistem tidak mengetahui apa yang ingin kamu lakukan!');
+        }
+
+    }
+
+    public function jadwalDelete(Request $request) {
+        if ($request->identity) {
+            $jadwal = Jadwal::where('id', $request->id)->first();
+
+            if ($request->identity == 'hari') {
+                if (!$jadwal) {
+                    return redirect()->route('admin.jadwal')->with('errorMessage', 'Kamu siapa ?');
+                }
+                
+                $jadwal->delete();
+                
+                return redirect()->route('admin.jadwal')->with('berhasil', 'Hari berhasil dihapus');
+            }
+            
+            if ($request->identity == 'pelajaran') {
+                if (!$jadwal) {
+                    return redirect()->route('admin.jadwal')->with('errorMessage', 'Kamu siapa ?');
+                }
+
+                $jadwal->pelajaran()->detach($request->pelajaran_id);
+                
+                return redirect()->route('admin.jadwal')->with('berhasil', 'Pelajaran berhasil dihapus');
+            }
+        } else {
+            return redirect()->route('admin.jadwal')->with('errorMessage', 'Sistem tidak mengetahui apa yang ingin kamu lakukan!');
+        }
+    }
+    // End Jadwal
 
     public function absen() {
         return view('dashboard.admin.absen');

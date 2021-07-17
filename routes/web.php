@@ -56,6 +56,13 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::post('/pelajaran/delete', 'AdminController@pelajaranDelete')->name('admin.pelajaran.delete');
         // End Pelajaran Crud
 
+        // Jadwal Crud
+        Route::get('/jadwal', 'AdminController@jadwal')->name('admin.jadwal');
+        Route::post('/jadwal', 'AdminController@jadwalPost')->name('admin.jadwal.post');
+        Route::post('/jadwal/update', 'AdminController@jadwalUpdate')->name('admin.jadwal.update');
+        Route::post('/jadwal/delete', 'AdminController@jadwalDelete')->name('admin.jadwal.delete');
+        // End Jadwal Crud
+
         // Absen Crud
         Route::get('/absen', 'AdminController@absen')->name('admin.absen');
         // End Absen Crud

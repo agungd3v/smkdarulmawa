@@ -52,6 +52,12 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link @yield('jadwal')" href="{{ route('admin.jadwal') }}">
+                      <i class="ni ni-calendar-grid-58 text-primary"></i>
+                      <span class="nav-link-text">Data Jadwal</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link @yield('absen')" href="{{ route('admin.absen') }}">
                       <i class="ni ni-check-bold text-info"></i>
                       <span class="nav-link-text">Data Absen</span>
@@ -71,18 +77,6 @@
                       <span class="nav-link-text">Dashboard</span>
                     </a>
                   </li>
-                  {{-- <li class="nav-item">
-                    <a class="nav-link @yield('matakuliah')" href="{{ route('teacher.matakuliah') }}">
-                      <i class="ni ni-book-bookmark text-success"></i>
-                      <span class="nav-link-text">Matakuliah</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link @yield('elearning')" href="{{ route('teacher.elearning') }}">
-                      <i class="ni ni-books text-orange"></i>
-                      <span class="nav-link-text">E-Learning</span>
-                    </a>
-                  </li> --}}
                 @endif
                 @if (Auth::user()->role === 'siswa')
                   <li class="nav-item">

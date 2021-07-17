@@ -19,12 +19,12 @@
         <meta http-equiv="Expires" content="0">
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Cache-Control" content="no-cache">
-        <meta name="og:title" content="SMK Darul Mawa | E-Learning"/>
-        <meta name="og:type" content="website"/>
-        <meta name="og:url" content="http://www.smkdarulmawa.com/"/>
-        <meta name="og:image" content="{{ asset('assets/img/brand/favicon.png') }}"/>
-        <meta name="og:site_name" content="SMK Darul Mawa"/>
-        <meta name="og:description" content="E-Learning untuk siswa siswi SMK Darul Mawa"/>
+        <meta property="og:title" content="SMK Darul Mawa | E-Learning"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://www.smkdarulmawa.com/"/>
+        <meta property="og:image" content="http://www.smkdarulmawa.com/assets/img/brand/favicon.png"/>
+        <meta property="og:site_name" content="SMK Darul Mawa"/>
+        <meta property="og:description" content="E-Learning untuk siswa siswi SMK Darul Mawa"/>
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <style>
             html, body {
