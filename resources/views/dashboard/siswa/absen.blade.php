@@ -49,7 +49,7 @@
     <div class="card">
       <div class="card-header">
         <h2 class="text-center mb-0 text-primary">ABSEN PELAJARAN</h2>
-        <h4 class="text-center mb-0" id="pelajaran">-</h4>
+        <h4 class="text-center mb-0" id="pelajaran">Tidak ada pelajaran</h4>
         <h1 class="text-center mb-0 mt-3 d-none" id="jam_masuk_pulang">
           <span id="d_jam_masuk"></span>
           <span>-</span>
@@ -190,13 +190,17 @@
       }
 
       if (jadwalSekarang) {
-        elMasukPulang.classList.remove('d-none')
-        const splitJamMasuk = jadwalSekarang.pivot.jam_masuk.split(':')
-        const splitJamPulang = jadwalSekarang.pivot.jam_pulang.split(':')
-        elMasuk.textContent = splitJamMasuk[0] + ':' + splitJamMasuk[1]
-        elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
-        elPelajaranId.value = jadwalSekarang.id;
-        elPelajaran.textContent = jadwalSekarang.nama_pelajaran
+        if (dateNow < masuk || dateNow > pulang) {
+          elBtnAbsen.setAttribute('disabled', true)
+        } else {
+          elMasukPulang.classList.remove('d-none')
+          const splitJamMasuk = jadwalSekarang.pivot.jam_masuk.split(':')
+          const splitJamPulang = jadwalSekarang.pivot.jam_pulang.split(':')
+          elMasuk.textContent = splitJamMasuk[0] + ':' + splitJamMasuk[1]
+          elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
+          elPelajaranId.value = jadwalSekarang.id;
+          elPelajaran.textContent = jadwalSekarang.nama_pelajaran
+        }
       }
     }).catch(err => {
       console.error(err)
