@@ -200,6 +200,8 @@
           elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
           elPelajaranId.value = jadwalSekarang.id;
           elPelajaran.textContent = jadwalSekarang.nama_pelajaran
+          
+          elBtnAbsen.removeAttribute('disabled')
         }
       }
     }).catch(err => {
