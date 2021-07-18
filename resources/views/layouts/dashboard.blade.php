@@ -77,12 +77,30 @@
                       <span class="nav-link-text">Dashboard</span>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('jadwal')" href="{{ route('guru.jadwal') }}">
+                      <i class="ni ni-calendar-grid-58 text-success"></i>
+                      <span class="nav-link-text">Jadwal Mengajar</span>
+                    </a>
+                  </li>
                 @endif
                 @if (Auth::user()->role === 'siswa')
                   <li class="nav-item">
                     <a class="nav-link @yield('dashboard')" href="{{ route('siswa.dashboard') }}">
                       <i class="ni ni-tv-2 text-primary"></i>
                       <span class="nav-link-text">Dashboard</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('jadwal')" href="{{ route('siswa.jadwal') }}">
+                      <i class="ni ni-calendar-grid-58 text-warning"></i>
+                      <span class="nav-link-text">Jadwal Pelajaran</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('absen')" href="{{ route('siswa.absen') }}">
+                      <i class="ni ni-check-bold text-info"></i>
+                      <span class="nav-link-text">Absen Pelajaran</span>
                     </a>
                   </li>
                 @endif

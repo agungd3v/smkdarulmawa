@@ -74,12 +74,16 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
     // Controller dashboard guru
     Route::group(['prefix' => 'guru', 'middleware' => 'guru'], function() {
         Route::get('/', 'GuruController@index')->name('guru.dashboard');
+        Route::get('/jadwal', 'GuruController@jadwal')->name('guru.jadwal');
     });
     // End Controller dashboard guru
 
     // Controller dashboard siswa
     Route::group(['prefix' => 'siswa', 'middleware' => 'siswa'], function() {
         Route::get('/', 'SiswaController@index')->name('siswa.dashboard');
+        Route::get('/jadwal', 'SiswaController@jadwal')->name('siswa.jadwal');
+        Route::get('/absen', 'SiswaController@absen')->name('siswa.absen');
+        Route::post('/absen', 'SiswaController@absenPost')->name('siswa.absen.post');
     });
     // End Controller dashboard siswa
 });

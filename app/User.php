@@ -42,4 +42,8 @@ class User extends Authenticatable
     public function pelajaran() {
         return $this->hasMany(Pelajaran::class, 'guru_id', 'id');
     }
+
+    public function absen() {
+        return $this->hasMany(Absen::class, 'siswa_id', 'id');
+    }
 }

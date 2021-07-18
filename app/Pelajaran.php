@@ -19,4 +19,8 @@ class Pelajaran extends Model
     public function jadwal() {
         return $this->belongsToMany(Jadwal::class, 'jadwal_pelajaran', 'pelajaran_id', 'jadwal_id', 'id')->withTimestamps();
     }
+
+    public function absen() {
+        return $this->hasMany(Absen::class, 'siswa_id', 'id');
+    }
 }
