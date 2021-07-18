@@ -174,11 +174,11 @@
         const masuk = jadwal.jam_masuk
         const pulang = jadwal.jam_pulang
 
-        // if (dateNow < masuk || dateNow > pulang) {
-        //   elBtnAbsen.setAttribute('disabled', true)
-        // } else {
-        //   elBtnAbsen.removeAttribute('disabled')
-        // }
+        if (dateNow < masuk || dateNow > pulang) {
+          elBtnAbsen.setAttribute('disabled', true)
+        } else {
+          elBtnAbsen.removeAttribute('disabled')
+        }
 
         data.message.pelajaran.map(data => {
           if (dateNow < data.pivot.jam_pulang) {
