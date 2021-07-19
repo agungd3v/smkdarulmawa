@@ -18,7 +18,7 @@
         <h3 class="mb-4">{{ count($materi->komentar) }} Komentar</h3>
         <div class="container-fluid">
           @foreach ($materi->komentar as $komentar)
-            <div class="row @if($komentar->user->id == Auth::user()->id) justify-content-end @endif">
+            <div class="row mt-2 @if($komentar->user->id == Auth::user()->id) justify-content-end @endif">
               <div class="col-md-6 col-sm-12">
                 <div class="card mb-0" style="border: 1px solid #5e72e4">
                   <div class="card-body">
@@ -37,7 +37,7 @@
                     </div>
                     <div style="position: absolute; bottom: 0; right: 0">
                       <span class="badge badge-lg badge-primary">
-                        {{ date('d / m / Y', strtotime($komentar->created_at)) }}
+                        {{ date('d/m/Y - H:i', strtotime($komentar->created_at)) }}
                       </span>
                     </div>
                   </div>

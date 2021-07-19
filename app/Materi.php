@@ -18,6 +18,6 @@ class Materi extends Model
     }
 
     public function komentar() {
-        return $this->hasMany(Komentar::class, 'materi_id', 'id');
+        return $this->hasMany(Komentar::class, 'materi_id', 'id')->orderBy('created_at', 'desc');
     }
 }
