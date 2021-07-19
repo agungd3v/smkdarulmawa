@@ -21,6 +21,10 @@ class Pelajaran extends Model
     }
 
     public function absen() {
-        return $this->hasMany(Absen::class, 'siswa_id', 'id');
+        return $this->hasMany(Absen::class, 'pelajaran_id', 'id');
+    }
+
+    public function materi() {
+        return $this->hasMany(Materi::class, 'pelajaran_id', 'id');
     }
 }

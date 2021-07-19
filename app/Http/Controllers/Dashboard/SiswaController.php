@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Jadwal;
 use App\Pelajaran;
 use App\Absen;
+use App\Materi;
+use App\Komentar;
 
 class SiswaController extends Controller
 {
@@ -50,5 +52,36 @@ class SiswaController extends Controller
         } else {
             return redirect()->route('siswa.absen')->with('errorMessage', 'Kamu siapa ?');
         }
+    }
+
+    public function materi() {
+        $pelajarans = Pelajaran::with(['materi'])->get();
+        return view('dashboard.siswa.materi', compact('pelajarans'));
+    }
+
+    public function materiView($id) {
+        $materi = Materi::with('pelajaran', 'user')->where('id', $id)->first();
+        return view('dashboard.siswa.view-materi', compact('materi'));
+    }
+
+    public function komentarPost(Request $request) {
+        $request->validate([
+            'materi' => 'required',
+            'comment' => 'required'
+        ]);
+
+        $user = Auth::user();
+        $materi = Materi::where('id', $request->materi)->first();
+        if (!$materi) {
+            return redirect()->route('siswa.materi.view', $materi->id)->with('errorMessage', 'Something when wrong');
+        }
+
+        $komentar = new Komentar();
+        $komentar->siswa_id = $user->id;
+        $komentar->materi_id = $materi->id;
+        $komentar->comment = $request->comment;
+        $komentar->save();
+
+        return redirect()->route('siswa.materi.view', $materi->id);
     }
 }

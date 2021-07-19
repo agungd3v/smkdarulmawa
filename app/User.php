@@ -46,4 +46,12 @@ class User extends Authenticatable
     public function absen() {
         return $this->hasMany(Absen::class, 'siswa_id', 'id');
     }
+
+    public function materi() {
+        return $this->hasMany(Materi::class, 'guru_id', 'id');
+    }
+
+    public function komentar() {
+        return $this->hasMany(Komentar::class, 'siswa_id', 'id');
+    }
 }

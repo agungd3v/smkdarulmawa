@@ -83,6 +83,18 @@
                       <span class="nav-link-text">Jadwal Mengajar</span>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('absen')" href="{{ route('guru.absen') }}">
+                      <i class="ni ni-check-bold text-warning"></i>
+                      <span class="nav-link-text">Absen Siswa</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('materi')" href="{{ route('guru.materi') }}">
+                      <i class="ni ni-single-copy-04 text-info"></i>
+                      <span class="nav-link-text">Materi</span>
+                    </a>
+                  </li>
                 @endif
                 @if (Auth::user()->role === 'siswa')
                   <li class="nav-item">
@@ -101,6 +113,12 @@
                     <a class="nav-link @yield('absen')" href="{{ route('siswa.absen') }}">
                       <i class="ni ni-check-bold text-info"></i>
                       <span class="nav-link-text">Absen Pelajaran</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('materi')" href="{{ route('siswa.materi') }}">
+                      <i class="ni ni-app text-success"></i>
+                      <span class="nav-link-text">Materi Pelajaran</span>
                     </a>
                   </li>
                 @endif

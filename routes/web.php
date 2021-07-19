@@ -75,6 +75,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
     Route::group(['prefix' => 'guru', 'middleware' => 'guru'], function() {
         Route::get('/', 'GuruController@index')->name('guru.dashboard');
         Route::get('/jadwal', 'GuruController@jadwal')->name('guru.jadwal');
+        Route::get('/absen', 'GuruController@absen')->name('guru.absen');
+        Route::get('/materi', 'GuruController@materi')->name('guru.materi');
+        Route::post('/materi', 'GuruController@materiPost')->name('guru.materi.post');
     });
     // End Controller dashboard guru
 
@@ -84,8 +87,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/jadwal', 'SiswaController@jadwal')->name('siswa.jadwal');
         Route::get('/absen', 'SiswaController@absen')->name('siswa.absen');
         Route::post('/absen', 'SiswaController@absenPost')->name('siswa.absen.post');
+        Route::get('/materi', 'SiswaController@materi')->name('siswa.materi');
+        Route::get('/materi/{id}', 'SiswaController@materiView')->name('siswa.materi.view');
+        Route::post('/komentar', 'SiswaController@komentarPost')->name('siswa.komentar.post');
     });
     // End Controller dashboard siswa
 });
-
-// Route::get('/home', 'HomeController@index')->name('home');
