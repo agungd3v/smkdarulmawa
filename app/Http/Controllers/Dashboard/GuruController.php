@@ -12,6 +12,7 @@ use App\Pelajaran;
 use App\User;
 use App\Tugas;
 use App\Jawaban;
+use PDF;
 
 class GuruController extends Controller
 {
@@ -25,8 +26,9 @@ class GuruController extends Controller
     }
 
     public function absen() {
+        $pelajarans = Pelajaran::where('guru_id', Auth::user()->id)->get();
         $absens = Absen::with(['user', 'pelajaran'])->get();
-        return view('dashboard.guru.absen', compact('absens'));
+        return view('dashboard.guru.absen', compact('absens', 'pelajarans'));
     }
 
     public function materi() {
@@ -100,5 +102,48 @@ class GuruController extends Controller
         $jawaban->save();
 
         return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil memberikan nilai '. $jawaban->nilai .' untuk siswa '. $jawaban->user->name);
+    }
+
+    public function reportAbsen(Request $request) {
+        $pelajaran = Pelajaran::where('id', $request->pelajaran)->first();
+        $from = null;
+        $to = null;
+        if ($pelajaran) {
+            if ($request->from == null && $request->to == null) {
+                $absens = Absen::with('user')->where('pelajaran_id', $pelajaran->id)->orderBy('created_at', 'desc')->get();
+            } else {
+                if ($request->from != null && $request->to == null) {
+                    $from = date('d/m/Y', strtotime($request->from));
+                    $absens = Absen::with('user')
+                                    ->where('created_at', '>', $request->from)
+                                    ->where('pelajaran_id', $pelajaran->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                } elseif ($request->to != null && $request->from == null) {
+                    $to = date('d/m/Y', strtotime($request->to));
+                    $absens = Absen::with('user')
+                                    ->whereBetween('created_at', '<', $request->to)
+                                    ->where('pelajaran_id', $pelajaran->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                } else {
+                    $from = date('d/m/Y', strtotime($request->from));
+                    $to = date('d/m/Y', strtotime($request->to));
+                    $absens = Absen::with('user')
+                                    ->whereBetween('created_at', [$request->from, $request->to])
+                                    ->where('pelajaran_id', $pelajaran->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                }
+            }
+
+            $pdf = PDF::loadview('report.absen', compact('pelajaran', 'absens', 'from', 'to'))->setPaper('A4', 'potrait');
+            return $pdf->stream(
+                "Report Absen" . ($from || $to ? " - " : "") . ($from && $to ? "($from - " : $from) . ($from && $to ? "$to)" : $to)
+            );
+        } else {
+            return redirect()->route('guru.absen')->with('errorMessage', 'Mohon pilih pelajaran terlebih dahulu!');
+        }
+
     }
 }
