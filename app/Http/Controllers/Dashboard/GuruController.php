@@ -122,7 +122,7 @@ class GuruController extends Controller
                 } elseif ($request->to != null && $request->from == null) {
                     $to = date('d/m/Y', strtotime($request->to));
                     $absens = Absen::with('user')
-                                    ->whereBetween('created_at', '<', $request->to)
+                                    ->where('created_at', '<', $request->to)
                                     ->where('pelajaran_id', $pelajaran->id)
                                     ->orderBy('created_at', 'desc')
                                     ->get();

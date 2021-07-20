@@ -19,7 +19,7 @@
   <span>{{ $pelajaran->nama_pelajaran }}</span>
   @if ($from || $to)
     <h2 style="margin-bottom: 3px">Periode</h2>
-    <span>{{ $from ? $from : '' }} {{ $from || $to ? '-' : '' }} {{ $to ? $to : '' }}</span>
+    <span>{{ $from ? $from : '' }} {{ $from && !$to ? '>' : '' }} {{ $from && $to ? '-' : '' }} {{ !$from && $to ? '<' : '' }} {{ $to ? $to : '' }}</span>
   @endif
   <table style="width: 100%">
     <thead>
