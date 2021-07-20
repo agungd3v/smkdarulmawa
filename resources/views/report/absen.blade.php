@@ -15,10 +15,18 @@
   </style>
 </head>
 <body>
-  <h2 style="margin-bottom: 0">Pelajaran</h2>
-  <span>{{ $pelajaran->nama_pelajaran }}</span>
+  <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start">
+    <div>
+      <h2 style="margin-bottom: 0">Pelajaran</h2>
+      <span>{{ $pelajaran->nama_pelajaran }}</span>
+    </div>
+    <div style="float: right">
+      <h2 style="margin-bottom: 0">Guru</h2>
+      <span>{{ $pelajaran->guru->name }}</span>
+    </div>
+  </div>
   @if ($from || $to)
-    <h2 style="margin-bottom: 3px">Periode</h2>
+    <h2 style="margin-bottom: 0">Periode</h2>
     <span>{{ $from ? $from : '' }} {{ $from && !$to ? '>' : '' }} {{ $from && $to ? '-' : '' }} {{ !$from && $to ? '<' : '' }} {{ $to ? $to : '' }}</span>
   @endif
   <table style="width: 100%">

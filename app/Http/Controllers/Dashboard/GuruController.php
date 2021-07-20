@@ -105,7 +105,7 @@ class GuruController extends Controller
     }
 
     public function reportAbsen(Request $request) {
-        $pelajaran = Pelajaran::where('id', $request->pelajaran)->first();
+        $pelajaran = Pelajaran::with('guru')->where('id', $request->pelajaran)->first();
         $from = null;
         $to = null;
         if ($pelajaran) {
