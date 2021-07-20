@@ -78,6 +78,9 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/absen', 'GuruController@absen')->name('guru.absen');
         Route::get('/materi', 'GuruController@materi')->name('guru.materi');
         Route::post('/materi', 'GuruController@materiPost')->name('guru.materi.post');
+        Route::get('/tugas', 'GuruController@tugas')->name('guru.tugas');
+        Route::post('/tugas', 'GuruController@tugasPost')->name('guru.tugas.post');
+        Route::post('/tugas/penilaian', 'GuruController@tugasPenilaian')->name('guru.tugas.penilaian');
     });
     // End Controller dashboard guru
 
@@ -90,6 +93,8 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/materi', 'SiswaController@materi')->name('siswa.materi');
         Route::get('/materi/{id}', 'SiswaController@materiView')->name('siswa.materi.view');
         Route::post('/komentar', 'SiswaController@komentarPost')->name('siswa.komentar.post');
+        Route::get('/tugas', 'SiswaController@tugas')->name('siswa.tugas');
+        Route::post('/tugas/jawab', 'SiswaController@jawaban')->name('siswa.jawab');
     });
     // End Controller dashboard siswa
 });

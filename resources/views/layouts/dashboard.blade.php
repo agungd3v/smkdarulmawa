@@ -92,7 +92,13 @@
                   <li class="nav-item">
                     <a class="nav-link @yield('materi')" href="{{ route('guru.materi') }}">
                       <i class="ni ni-single-copy-04 text-info"></i>
-                      <span class="nav-link-text">Materi</span>
+                      <span class="nav-link-text">Materi Pelajaran</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('tugas')" href="{{ route('guru.tugas') }}">
+                      <i class="ni ni-vector text-danger"></i>
+                      <span class="nav-link-text">Tugas</span>
                     </a>
                   </li>
                 @endif
@@ -119,6 +125,12 @@
                     <a class="nav-link @yield('materi')" href="{{ route('siswa.materi') }}">
                       <i class="ni ni-app text-success"></i>
                       <span class="nav-link-text">Materi Pelajaran</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link @yield('tugas')" href="{{ route('siswa.tugas') }}">
+                      <i class="ni ni-vector text-danger"></i>
+                      <span class="nav-link-text">Tugas</span>
                     </a>
                   </li>
                 @endif

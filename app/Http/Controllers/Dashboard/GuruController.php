@@ -10,6 +10,8 @@ use App\Absen;
 use App\Materi;
 use App\Pelajaran;
 use App\User;
+use App\Tugas;
+use App\Jawaban;
 
 class GuruController extends Controller
 {
@@ -29,7 +31,6 @@ class GuruController extends Controller
 
     public function materi() {
         $guru = User::with(['pelajaran'])->where('id', Auth::user()->id)->first();
-        // dd($guru);
         $pelajarans = Auth::user()->pelajaran;
         return view('dashboard.guru.materi', compact('pelajarans', 'guru'));
     }
@@ -56,5 +57,48 @@ class GuruController extends Controller
         } else {
             return redirect()->route('guru.materi')->with('errorMessage', 'Pelajaran tidak dikenali!');
         }
+    }
+
+    public function tugas() {
+        $guru = User::with(['pelajaran'])->where('id', Auth::user()->id)->first();
+        // dd($guru);
+        return view('dashboard.guru.tugas', compact('guru'));
+    }
+
+    public function tugasPost(Request $request) {
+        $request->validate([
+            'pelajaran_id' => 'required',
+            'soal' => 'required',
+            'deadline' => 'required'
+        ]);
+        
+        $pelajaran = Pelajaran::find($request->pelajaran_id);
+        if (!$pelajaran) {
+            return redirect()->route('guru.tugas')->with('errorMessage', 'Aksi yang kamu lakukan tidak dikenali oleh sistem kami');
+        }
+
+        $tugas = new Tugas();
+        $tugas->pelajaran_id = $pelajaran->id;
+        $tugas->soal = $request->soal;
+        $tugas->deadline = $request->deadline;
+        $tugas->save();
+
+        return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil menambahkan tugas pada pelajaran '. $pelajaran->nama_pelajaran);
+    }
+
+    public function tugasPenilaian(Request $request) {
+        $request->validate([
+            'menilai' => 'required|numeric'
+        ]);
+
+        $jawaban = Jawaban::with('user', 'tugas')->where('siswa_id', $request->siswa_id)->where('tugas_id', $request->tugas_id)->first();
+        if (!$jawaban) {
+            return redirect()->route('guru.tugas')->with('errorMessage', 'Sistem tidak mengenali aksi yang ingin kamu lakukan!');
+        }
+
+        $jawaban->nilai = $request->menilai;
+        $jawaban->save();
+
+        return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil memberikan nilai '. $jawaban->nilai .' untuk siswa '. $jawaban->user->name);
     }
 }

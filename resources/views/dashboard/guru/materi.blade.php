@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
-@section('title', 'Materi')
+@section('title', 'Materi Pelajaran')
 @section('materi', 'active')
 
 @push('css')
@@ -98,7 +98,7 @@
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td class="pt-1 pb-0"></td>
+                                  <td class="pt-1 pb-0 border-top-0"></td>
                                 </tr>
                               @endforeach
                             </tbody>
@@ -109,26 +109,6 @@
                   </tbody>
                 </table>
               </td>
-              {{-- <td class="text-right">
-                <div class="dropdown">
-                  <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <button class="dropdown-item" style="outline: none" data-toggle="modal" data-target="#editSiswa" onclick="editSiswa({{ $siswa }})">Edit Data</button>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('resetpassword-{{ $siswa->nidn }}').submit();">Reset Password</a>
-                    <form id="resetpassword-{{ $siswa->nidn }}" action="{{ route('admin.siswa.resetpassword') }}" method="POST" class="d-none">
-                      @csrf
-                      <input type="hidden" name="id" value="{{ $siswa->id }}">
-                    </form>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('deletedata-{{ $siswa->nidn }}').submit();">Delete Data</a>
-                    <form id="deletedata-{{ $siswa->nidn }}" action="{{ route('admin.siswa.delete') }}" method="POST" class="d-none">
-                      @csrf
-                      <input type="hidden" name="id" value="{{ $siswa->id }}">
-                    </form>
-                  </div>
-                </div>
-              </td> --}}
             </tr>
           </tbody>
         </table>

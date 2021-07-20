@@ -27,4 +27,8 @@ class Pelajaran extends Model
     public function materi() {
         return $this->hasMany(Materi::class, 'pelajaran_id', 'id');
     }
+
+    public function tugas() {
+        return $this->hasMany(Tugas::class, 'pelajaran_id', 'id')->orderBy('created_at', 'desc');
+    }
 }

@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use App\Jadwal;
 use App\Pelajaran;
 use App\Absen;
+use App\Jawaban;
 use App\Materi;
 use App\Komentar;
+use App\Tugas;
 
 class SiswaController extends Controller
 {
@@ -83,5 +85,32 @@ class SiswaController extends Controller
         $komentar->save();
 
         return redirect()->route('siswa.materi.view', $materi->id);
+    }
+
+    public function tugas() {
+        $jawabanku = Jawaban::where('siswa_id', Auth::user()->id)->first();
+        $pelajarans = Pelajaran::with(['tugas'])->get();
+        return view('dashboard.siswa.tugas', compact('pelajarans', 'jawabanku'));
+    }
+
+    public function jawaban(Request $request) {
+        $request->validate([
+            'tugas_id' => 'required',
+            'jawab' => 'required'
+        ]);
+
+        $tugas = Tugas::where('id', $request->tugas_id)->first();
+        if (!$tugas) {
+            return redirect()->route('siswa.tugas')->with('errorMessage', 'Sistem tidak mengetahui aksi yang kamu lakukan');
+        }
+
+        $user = Auth::user();
+        $jawaban = new Jawaban();
+        $jawaban->siswa_id = $user->id;
+        $jawaban->tugas_id = $tugas->id;
+        $jawaban->jawaban = $request->jawab;
+        $jawaban->save();
+
+        return redirect()->route('siswa.tugas')->with('berhasil', 'Kamu telah berhasil menjawab');
     }
 }

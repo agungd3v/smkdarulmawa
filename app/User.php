@@ -54,4 +54,8 @@ class User extends Authenticatable
     public function komentar() {
         return $this->hasMany(Komentar::class, 'siswa_id', 'id');
     }
+
+    public function jawaban() {
+        return $this->hasMany(Jawaban::class, 'siswa_id', 'id');
+    }
 }
