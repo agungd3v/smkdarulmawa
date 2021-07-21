@@ -17,7 +17,7 @@ class AdminController extends Controller
 
     // Guru
     public function guru() {
-        $gurus = User::where('role', 'guru')->orderBy('id', 'desc')->paginate(5);
+        $gurus = User::where('role', 'guru')->orderBy('id', 'desc')->paginate(10);
         return view('dashboard.admin.guru', compact('gurus'));
     }
 
@@ -103,7 +103,7 @@ class AdminController extends Controller
 
     // Siswa
     public function siswa() {
-        $siswas = User::where('role', 'siswa')->orderBy('id', 'desc')->paginate(5);
+        $siswas = User::where('role', 'siswa')->orderBy('id', 'desc')->paginate(10);
         return view('dashboard.admin.siswa', compact('siswas'));
     }
 

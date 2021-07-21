@@ -102,6 +102,7 @@
           </tbody>
         </table>
       </div>
+      {{ $siswas->links() }}
     </div>
   </div>
 </div>

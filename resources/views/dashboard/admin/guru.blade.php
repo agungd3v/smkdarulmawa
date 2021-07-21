@@ -102,6 +102,7 @@
           </tbody>
         </table>
       </div>
+      {{ $gurus->links() }}
     </div>
   </div>
 </div>
