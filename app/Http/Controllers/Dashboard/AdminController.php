@@ -65,10 +65,7 @@ class AdminController extends Controller
             }
         }
 
-        if ($request->oldpassword && $request->newpassword) {
-            if (!Hash::check($request->oldpassword, $user->password)) {
-                return redirect()->route('admin.guru')->with('errorMessage', 'Password lama tidak benar!');
-            }
+        if ($request->newpassword) {
             $user->password = Hash::make($request->newpassword);
         }
 
@@ -151,10 +148,7 @@ class AdminController extends Controller
             }
         }
 
-        if ($request->oldpassword && $request->newpassword) {
-            if (!Hash::check($request->oldpassword, $user->password)) {
-                return redirect()->route('admin.siswa')->with('errorMessage', 'Password lama tidak benar!');
-            }
+        if ($request->newpassword) {
             $user->password = Hash::make($request->newpassword);
         }
 

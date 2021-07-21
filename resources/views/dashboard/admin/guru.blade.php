@@ -206,17 +206,6 @@
             </div>
           </div>
           <div class="form-group mb-2">
-            <label for="oldpassword">Password Sekarang</label>
-            <div class="input-group input-group-merge">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="ni ni-key-25 text-primary"></i>
-                </span>
-              </div>
-              <input type="password" class="form-control" name="oldpassword" id="oldpassword">
-            </div>
-          </div>
-          <div class="form-group mb-2">
             <label for="newpassword">Password Baru</label>
             <div class="input-group input-group-merge">
               <div class="input-group-prepend">

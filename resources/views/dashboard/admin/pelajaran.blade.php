@@ -99,6 +99,7 @@
           </tbody>
         </table>
       </div>
+      {{ $pelajarans->links() }}
     </div>
   </div>
 </div>

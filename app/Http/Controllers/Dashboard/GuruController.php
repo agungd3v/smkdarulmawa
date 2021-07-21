@@ -27,7 +27,7 @@ class GuruController extends Controller
 
     public function absen() {
         $pelajarans = Pelajaran::where('guru_id', Auth::user()->id)->get();
-        $absens = Absen::with(['user', 'pelajaran'])->get();
+        $absens = Absen::with(['user', 'pelajaran'])->orderBy('id', 'desc')->paginate(10);
         return view('dashboard.guru.absen', compact('absens', 'pelajarans'));
     }
 
@@ -63,7 +63,6 @@ class GuruController extends Controller
 
     public function tugas() {
         $guru = User::with(['pelajaran'])->where('id', Auth::user()->id)->first();
-        // dd($guru);
         return view('dashboard.guru.tugas', compact('guru'));
     }
 

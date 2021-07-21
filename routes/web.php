@@ -27,6 +27,8 @@ Auth::routes([
 Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
     // Controller check role & redirect user login as role
     Route::get('/', 'DashboardController@index');
+    Route::get('/profile', 'ProfileController@index')->middleware('auth')->name('user.profile');
+    Route::post('/profile', 'ProfileController@update')->middleware('auth')->name('user.profile.update');
     // End Controller check role & redirect user login as role
 
     // Controller dashboard admin

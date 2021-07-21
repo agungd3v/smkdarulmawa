@@ -98,6 +98,7 @@
           </tbody>
         </table>
       </div>
+      {{ $absens->links() }}
     </div>
   </div>
 </div>
