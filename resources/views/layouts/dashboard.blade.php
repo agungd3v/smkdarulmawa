@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'UM Metro E-Learning') }} - @yield('profile')@yield('title')</title>
+    <title>{{ config('app.name', 'SMK Darul Mawa E-Learning') }} - @yield('profile')@yield('title')</title>
     <link rel="icon" href="{{ asset('assets/img/brand/favicon.png') }}" type="image/png">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
