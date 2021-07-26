@@ -47,7 +47,7 @@
                           @if (Auth::check())
                             @if ($pelajaran->guru->id == Auth::user()->id)
                               <tr>
-                                <td class="border-top-0 py-0">{{ $pelajaran->nama_pelajaran }} ({{ $pelajaran->guru->name }})</td>
+                                <td class="border-top-0 py-0" style="width: 100%">{{ $pelajaran->nama_pelajaran }} ({{ $pelajaran->guru->name }})</td>
                                 <td class="border-top-0 py-0">{{ $pelajaran->pivot->jam_masuk }}</td>
                                 <td class="border-top-0 py-0">{{ $pelajaran->pivot->jam_pulang }}</td>
                               </tr>
