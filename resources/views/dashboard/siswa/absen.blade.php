@@ -182,13 +182,13 @@
           }
 
           data.message.pelajaran.filter(data => {
+            console.log(data)
             if (dateNow < data.pivot.jam_pulang) {
               jadwalSekarang = data
             }
           })
           
           if (jadwalSekarang) {
-            console.log(jadwalSekarang)
             if (dateNow < masuk || dateNow > pulang) {
               elBtnAbsen.setAttribute('disabled', true)
             } else {
