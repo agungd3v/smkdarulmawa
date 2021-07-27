@@ -199,6 +199,8 @@
               
               elBtnAbsen.removeAttribute('disabled')
             }
+          } else {
+            elBtnAbsen.setAttribute('disabled', true)
           }
         }, 1000);
       } else {

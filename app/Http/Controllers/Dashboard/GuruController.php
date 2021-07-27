@@ -13,6 +13,7 @@ use App\User;
 use App\Tugas;
 use App\Jawaban;
 use PDF;
+use App\Komentar;
 
 class GuruController extends Controller
 {
@@ -35,6 +36,32 @@ class GuruController extends Controller
         $guru = User::with(['pelajaran'])->where('id', Auth::user()->id)->first();
         $pelajarans = Auth::user()->pelajaran;
         return view('dashboard.guru.materi', compact('pelajarans', 'guru'));
+    }
+
+    public function materiView($id) {
+        $materi = Materi::with('pelajaran', 'user')->where('id', $id)->first();
+        return view('dashboard.guru.view-materi', compact('materi'));
+    }
+
+    public function komentarPost(Request $request) {
+        $request->validate([
+            'materi' => 'required',
+            'comment' => 'required'
+        ]);
+
+        $user = Auth::user();
+        $materi = Materi::where('id', $request->materi)->first();
+        if (!$materi) {
+            return redirect()->route('guru.materi.view', $materi->id)->with('errorMessage', 'Something when wrong');
+        }
+
+        $komentar = new Komentar();
+        $komentar->siswa_id = $user->id;
+        $komentar->materi_id = $materi->id;
+        $komentar->comment = $request->comment;
+        $komentar->save();
+
+        return redirect()->route('guru.materi.view', $materi->id);
     }
 
     public function materiPost(Request $request) {
@@ -61,9 +88,49 @@ class GuruController extends Controller
         }
     }
 
+    public function materiUpdate(Request $request) {
+        $request->validate([
+            'pelajaran_id' => 'required',
+            'materi_id' => 'required',
+            'judul' => 'required',
+            'materi' => 'required'
+        ]);
+
+        $user = Auth::user();
+        $pelajaran = Pelajaran::where('id', $request->pelajaran_id)->first();
+        $materi = Materi::where('id', $request->materi_id)->where('guru_id', $user->id)->first();
+        
+        if ($pelajaran && $materi) {
+            $materi->pelajaran_id = $pelajaran->id;
+            $materi->judul = $request->judul;
+            $materi->materi = $request->materi;
+            $materi->save();
+
+            return redirect()->route('guru.materi')->with('berhasil', 'Berhasil menambahkan materi pelajaran '. $pelajaran->nama_pelajaran);
+        } else {
+            return redirect()->route('guru.materi')->with('errorMessage', 'Pelajaran tidak dikenali!');
+        }
+    }
+
+    public function materiDelete(Request $request) {
+        $request->validate([
+            'materi_id' => 'required'
+        ]);
+
+        $materi = Materi::find($request->materi_id);
+        if ($materi) {
+            $materi->delete();
+
+            return redirect()->route('guru.materi')->with('berhasil', 'Berhasil menghapus materi');
+        } else {
+            return redirect()->route('guru.materi')->with('errorMessage', 'Materi tidak dikenali!');
+        }
+    }
+
     public function tugas() {
+        $jawabans = Jawaban::with('user', 'tugas')->orderBy('created_at', 'desc')->paginate(15);
         $guru = User::with(['pelajaran'])->where('id', Auth::user()->id)->first();
-        return view('dashboard.guru.tugas', compact('guru'));
+        return view('dashboard.guru.tugas', compact('guru', 'jawabans'));
     }
 
     public function tugasPost(Request $request) {

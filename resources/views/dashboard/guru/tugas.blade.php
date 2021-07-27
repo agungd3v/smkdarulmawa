@@ -109,6 +109,48 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">Table Nilai</h3>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table align-items-center">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" class="sort" data-sort="hari">Nama Siswa</th>
+              <th scope="col" class="sort" data-sort="pelajaran">Nama Pelajaran</th>
+              <th scope="col" class="sort" data-sort="jam">Tugas Tanggal</th>
+              <th scope="col" class="sort" data-sort="status">Nilai</th>
+            </tr>
+          </thead>
+          <tbody class="list">  
+            @forelse ($jawabans as $jawaban)
+              @if ($jawaban->tugas->pelajaran->guru->id == Auth::user()->id)
+                <tr class="{{ $jawaban->nilai ? 'bg-success text-white' : '' }}">
+                  <th scope="row">{{ $loop->iteration }}</th>
+                  <td style="width: 100%">{{ $jawaban->user->name }}</td>
+                  <td>{{ $jawaban->tugas->pelajaran->nama_pelajaran }} ({{ $jawaban->tugas->pelajaran->guru->name }})</td>
+                  <td>{{ date('d/m/Y', strtotime($jawaban->created_at)) }}</td>
+                  <td>{{ $jawaban->nilai ? $jawaban->nilai : 0 }}</td>
+                </tr>
+              @endif
+            @empty
+              <tr>
+                <td colspan="5">Data Not Found</td>
+              </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+      {{ $jawabans->links() }}
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="openTugas" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -154,7 +196,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Form Tambah Materi</h5>
+        <h5 class="modal-title">Form Penilaian Tugas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

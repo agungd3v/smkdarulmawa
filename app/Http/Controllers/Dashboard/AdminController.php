@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Pelajaran;
 use App\Jadwal;
+use App\Absen;
+use App\Jawaban;
+use PDF;
 
 class AdminController extends Controller
 {
@@ -351,10 +354,57 @@ class AdminController extends Controller
     // End Jadwal
 
     public function absen() {
-        return view('dashboard.admin.absen');
+        $pelajarans = Pelajaran::orderBy('nama_pelajaran', 'asc')->get();
+        $absens = Absen::with('user', 'pelajaran')->orderBy('id', 'desc')->paginate(10);
+        return view('dashboard.admin.absen', compact('absens', 'pelajarans'));
     }
 
     public function nilai() {
-        return view('dashboard.admin.nilai');
+        $jawabans = Jawaban::with('user', 'tugas')->orderBy('created_at', 'desc')->paginate(15);
+        // dd($jawabans);
+        return view('dashboard.admin.nilai', compact('jawabans'));
+    }
+
+    public function reportAbsen(Request $request) {
+        $pelajaran = Pelajaran::with('guru')->where('id', $request->pelajaran)->first();
+        $from = null;
+        $to = null;
+        if ($pelajaran) {
+            if ($request->from == null && $request->to == null) {
+                $absens = Absen::with('user')->where('pelajaran_id', $pelajaran->id)->orderBy('created_at', 'desc')->get();
+            } else {
+                if ($request->from != null && $request->to == null) {
+                    $from = date('d/m/Y', strtotime($request->from));
+                    $absens = Absen::with('user')
+                                    ->where('created_at', '>', $request->from)
+                                    ->where('pelajaran_id', $pelajaran->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                } elseif ($request->to != null && $request->from == null) {
+                    $to = date('d/m/Y', strtotime($request->to));
+                    $absens = Absen::with('user')
+                                    ->where('created_at', '<', $request->to)
+                                    ->where('pelajaran_id', $pelajaran->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                } else {
+                    $from = date('d/m/Y', strtotime($request->from));
+                    $to = date('d/m/Y', strtotime($request->to));
+                    $absens = Absen::with('user')
+                                    ->whereBetween('created_at', [$request->from, $request->to])
+                                    ->where('pelajaran_id', $pelajaran->id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
+                }
+            }
+
+            $pdf = PDF::loadview('report.absen', compact('pelajaran', 'absens', 'from', 'to'))->setPaper('A4', 'potrait');
+            return $pdf->stream(
+                "Report Absen" . ($from || $to ? " - " : "") . ($from && $to ? "($from - " : $from) . ($from && $to ? "$to)" : $to)
+            );
+        } else {
+            return redirect()->route('admin.absen')->with('errorMessage', 'Mohon pilih pelajaran terlebih dahulu!');
+        }
+
     }
 }

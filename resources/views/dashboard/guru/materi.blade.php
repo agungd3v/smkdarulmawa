@@ -94,18 +94,24 @@
                         <td class="p-0">
                           <table class="table align-items-center">
                             <tbody class="list">
-                              @foreach ($pelajaran->materi as $materi)
+                              @forelse ($pelajaran->materi as $materi)
                                 <tr>
                                   <td class="py-0 w-100">
                                     <span class="mr-1">{{ $materi->judul }}</span>
                                   </td>
                                   <td>
-                                    <span class="badge badge-primary" style="cursor: pointer" onclick="viewMateri({{ $materi->id }})">View Materi</span>
-                                    <span class="badge badge-success" style="cursor: pointer" onclick="editMateri({{ $materi }})">Edit Materi</span>
+                                    <span class="badge badge-primary" style="cursor: pointer" onclick="viewMateri('{{ route('guru.materi.view', $materi->id) }}')">View Materi</span>
+                                    <span class="badge badge-success" style="cursor: pointer" onclick="editMateri({{ $materi }}, {{ $pelajaran->id }})">Edit Materi</span>
                                     <span class="badge badge-danger" style="cursor: pointer" onclick="deleteMateri({{ $materi->id }})">Delete Materi</span>  
                                   </td>
                                 </tr>
-                              @endforeach
+                              @empty
+                                <tr>
+                                  <td colspan="2">
+                                    <span class="badge badge-danger">Belum ada materi</span>
+                                  </td>
+                                </tr>
+                              @endforelse
                             </tbody>
                           </table>
                         </td>
@@ -166,12 +172,13 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('guru.materi.post') }}" method="POST">
+      <form action="{{ route('guru.materi.update') }}" method="POST">
         <div class="modal-body py-0">
           @csrf
+          <input type="hidden" id="editId" name="materi_id" value="xxx">
           <div class="form-group mb-2">
-            <label for="pelajaran">Pelajaran</label>
-            <select name="pelajaran_id" id="pelajaran" class="custom-select">
+            <label for="pelajaranEdit">Pelajaran</label>
+            <select name="pelajaran_id" id="pelajaranEdit" class="custom-select">
               <option value="" selected hidden>Pilih Pelajaran</option>
               @foreach ($pelajarans as $pelajaran)
                 <option value="{{ $pelajaran->id }}">{{ $pelajaran->nama_pelajaran }}</option>
@@ -179,17 +186,44 @@
             </select>
           </div>
           <div class="form-group mb-4">
-            <label for="judul">Judul Materi</label>
-            <input type="text" class="form-control" name="judul">
+            <label for="judulEdit">Judul Materi</label>
+            <input type="text" id="judulEdit" class="form-control" name="judul">
           </div>
-          <div class="form-group mb-2">
+          <div class="form-group mb-2 editmateri">
             <textarea id="materiEdit" name="materi"></textarea>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Simpan Data</button>
+          <button type="submit" class="btn btn-primary">Update Data</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteMateri" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+  <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+    <div class="modal-content bg-gradient-danger">
+      <div class="modal-header">
+        <h6 class="modal-title">Konfirmasi</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="py-3 text-center">
+          <i class="ni ni-bell-55 ni-3x"></i>
+          <h4 class="heading mt-4">Peringatan!</h4>
+          <p>Jika kamu menekan ya maka materi ini akan terhapus beserta isi komentar di dalamnya.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form action="{{ route('guru.materi.delete') }}" method="POST" class="mb-0">
+          @csrf
+          <input type="hidden" name="materi_id" id="deleteId" value="xxx">
+          <button type="submit" class="btn btn-white">Ya, Hapus Data</button>
+        </form>
+        <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Tidak</button>
+      </div>  
     </div>
   </div>
 </div>
@@ -206,23 +240,40 @@
     }).catch(err => {
       console.error(err)
     })
+  })
+  function editMateri(materi, pelajaranId) {
+    const elMateriId = document.getElementById('editId')
+    const elPelajaran = document.getElementById('pelajaranEdit')
+    const elJudul = document.getElementById('judulEdit')
+    const elMateri = document.getElementById('materiEdit')
+    const elckMateri = document.querySelector('.editmateri').querySelectorAll('.ck.ck-reset.ck-editor.ck-rounded-corners')
+
+    elMateriId.value = materi.id
+    elPelajaran.value = pelajaranId
+    elJudul.value = materi.judul
+
+    if (elckMateri.length > 0) {
+      elckMateri[0].remove()
+    }
+
     ClassicEditor.create(document.getElementById('materiEdit'), {
       toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'insertTable' ]
     }).then(editor => {
-      editor.model.document.on('change:data', () => {})
+      editor.setData(materi.materi)
     }).catch(err => {
       console.error(err)
     })
-  })
-  function editMateri(value) {
+    
     $('#editMateri').modal('show')
-    console.log(value)
   }
-  function viewMateri(value) {
-    console.log(value)
+  function viewMateri(materi) {
+    window.location.href = materi
   }
-  function deleteMateri(value) {
-    console.log(value)
+  function deleteMateri(materiId) {
+    const elDeleteId = document.getElementById('deleteId')
+    elDeleteId.value = materiId
+
+    $('#deleteMateri').modal('show')
   }
 </script>
 @endpush

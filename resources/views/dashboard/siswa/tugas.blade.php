@@ -66,7 +66,7 @@
             @forelse ($pelajaran->tugas as $tugas)
               <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="w-100">
-                  <div class="card card-stats mb-3" style="cursor: pointer" onclick="openTugas({{ $tugas }}, {{ $tugas->pelajaran }})">
+                  <div class="card card-stats mb-3" style="cursor: pointer" onclick="openTugas({{ $tugas }}, {{ $tugas->pelajaran }}, {{ $tugas->jawaban }})">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-6">
@@ -74,6 +74,7 @@
                           @foreach ($tugas->jawaban as $jawaban)
                             @if (Auth::check())
                               @if ($jawaban->siswa_id == Auth::user()->id && $jawaban->nilai)
+                                {{-- {{ dd($jawaban) }} --}}
                                 <p class="mb-0 text-sm d-flex align-items-center mt-2">
                                   <i class="ni ni-trophy text-success"></i>
                                   <span class="text-nowrap ml-2">{{ $jawaban->nilai }}</span>
@@ -138,20 +139,15 @@
             <h2>Soal</h2>
             <div id="soal">#####</div>
             <h2>Jawab</h2>
-            <div class="form-group mb-0">
-              @if (!$jawabanku)
-                <textarea id="jawab" name="jawab"></textarea>
-              @else
-                {!! $jawaban->jawaban !!}
-              @endif
+            <div class="form-group mb-0" id="lembarjawaban">
+              <textarea id="jawab" name="jawab"></textarea>
             </div>
+            <div id="jawabanku" class=""></div>
           </div>
         </div>
-        @if (!$jawabanku)
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Simpan Data</button>
-          </div>
-        @endif
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan Data</button>
+        </div>
       </form>
     </div>
   </div>
@@ -174,13 +170,35 @@
     }
   })
 
-  function openTugas(tugas, pelajaran) {
+  function openTugas(tugas, pelajaran, jawaban) {
     const elDisplayPelajaran = document.getElementById('display_pelajaran')
     const eldisplayDeadline = document.getElementById('display_deadline')
     const elSoal = document.getElementById('soal')
     const elTugas = document.getElementById('tugas')
+    const elJawab = document.getElementById('jawabanku')
+    const elLembarJawab = document.getElementById('lembarjawaban')
 
     const formatDate = tugas.deadline.split('-')
+
+    let jawabanExist = []
+    
+    jawaban.map(data => {
+      if (data.siswa_id == '{{ Auth::user()->id }}' && data.tugas_id == tugas.id) {
+        jawabanExist.push(data)
+      }
+    })
+    
+    if (jawabanExist.length > 0) {
+      document.querySelector('button[type=submit]').setAttribute('disabled', true)
+      elLembarJawab.classList.add('d-none')
+      elJawab.classList.remove('d-none')
+      elJawab.innerHTML = jawabanExist[0].jawaban
+    } else {
+      document.querySelector('button[type=submit]').removeAttribute('disabled')
+      elLembarJawab.classList.remove('d-none')
+      elJawab.classList.add('d-none')
+      elJawab.innerHTML = ''
+    }
 
     elTugas.value = tugas.id
     elDisplayPelajaran.textContent = pelajaran.nama_pelajaran
@@ -188,6 +206,7 @@
     elSoal.innerHTML = tugas.soal
 
     $('#openTugas').modal('show')
+    jawabanExist = []
   }
 </script>
 @endpush

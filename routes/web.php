@@ -70,6 +70,11 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         // End Absen Crud
 
         Route::get('/nilai', 'AdminController@nilai')->name('admin.nilai');
+
+        Route::get('/absenreport', function() {
+            return redirect()->route('admin.absen');
+        });
+        Route::post('/absenreport', 'AdminController@reportAbsen')->name('admin.report.absen');
     });
     // End Controller dashboard admin
 
@@ -80,6 +85,10 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/absen', 'GuruController@absen')->name('guru.absen');
         Route::get('/materi', 'GuruController@materi')->name('guru.materi');
         Route::post('/materi', 'GuruController@materiPost')->name('guru.materi.post');
+        Route::post('/materi/update', 'GuruController@materiUpdate')->name('guru.materi.update');
+        Route::post('/materi/delete', 'GuruController@materiDelete')->name('guru.materi.delete');
+        Route::get('/materi/{id}', 'GuruController@materiView')->name('guru.materi.view');
+        Route::post('/komentar', 'GuruController@komentarPost')->name('guru.komentar.post');
         Route::get('/tugas', 'GuruController@tugas')->name('guru.tugas');
         Route::post('/tugas', 'GuruController@tugasPost')->name('guru.tugas.post');
         Route::post('/tugas/penilaian', 'GuruController@tugasPenilaian')->name('guru.tugas.penilaian');
