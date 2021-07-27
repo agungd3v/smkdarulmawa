@@ -167,6 +167,7 @@
 
     fetch('/api/dashboard/jadwal').then(res => res.json()).then(data => {
       let jadwalSekarang
+      console.log(dateNow)
 
       if (data.status) {
         const jadwal = data.message
