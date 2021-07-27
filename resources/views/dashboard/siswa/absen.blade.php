@@ -167,41 +167,42 @@
 
     fetch('/api/dashboard/jadwal').then(res => res.json()).then(data => {
       let jadwalSekarang
-      console.log(dateNow)
 
       if (data.status) {
-        const jadwal = data.message
+        setTimeout(() => {
+          const jadwal = data.message
 
-        const masuk = jadwal.jam_masuk
-        const pulang = jadwal.jam_pulang
+          const masuk = jadwal.jam_masuk
+          const pulang = jadwal.jam_pulang
 
-        if (dateNow < masuk || dateNow > pulang) {
-          elBtnAbsen.setAttribute('disabled', true)
-        } else {
-          elBtnAbsen.removeAttribute('disabled')
-        }
-
-        data.message.pelajaran.map(data => {
-          if (dateNow < data.pivot.jam_pulang) {
-            jadwalSekarang = data
-          }
-        })
-        
-        if (jadwalSekarang) {
           if (dateNow < masuk || dateNow > pulang) {
             elBtnAbsen.setAttribute('disabled', true)
           } else {
-            elMasukPulang.classList.remove('d-none')
-            const splitJamMasuk = jadwalSekarang.pivot.jam_masuk.split(':')
-            const splitJamPulang = jadwalSekarang.pivot.jam_pulang.split(':')
-            elMasuk.textContent = splitJamMasuk[0] + ':' + splitJamMasuk[1]
-            elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
-            elPelajaranId.value = jadwalSekarang.id;
-            elPelajaran.textContent = jadwalSekarang.nama_pelajaran
-            
             elBtnAbsen.removeAttribute('disabled')
           }
-        }
+
+          data.message.pelajaran.map(data => {
+            if (dateNow < data.pivot.jam_pulang) {
+              jadwalSekarang = data
+            }
+          })
+          
+          if (jadwalSekarang) {
+            if (dateNow < masuk || dateNow > pulang) {
+              elBtnAbsen.setAttribute('disabled', true)
+            } else {
+              elMasukPulang.classList.remove('d-none')
+              const splitJamMasuk = jadwalSekarang.pivot.jam_masuk.split(':')
+              const splitJamPulang = jadwalSekarang.pivot.jam_pulang.split(':')
+              elMasuk.textContent = splitJamMasuk[0] + ':' + splitJamMasuk[1]
+              elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
+              elPelajaranId.value = jadwalSekarang.id;
+              elPelajaran.textContent = jadwalSekarang.nama_pelajaran
+              
+              elBtnAbsen.removeAttribute('disabled')
+            }
+          }
+        }, 1000);
       } else {
         elPelajaran.textContent = data.message
       }
