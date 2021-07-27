@@ -182,10 +182,7 @@
           }
 
           data.message.pelajaran.filter(data => {
-            console.log(data)
-            if (dateNow < data.pivot.jam_pulang) {
-              jadwalSekarang = data
-            }
+            if (dateNow > data.pivot.jam_masuk && dateNow < data.pivot.jam_pulang) return jadwalSekarang = data
           })
           
           if (jadwalSekarang) {
