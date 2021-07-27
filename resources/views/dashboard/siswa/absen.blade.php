@@ -181,7 +181,7 @@
             elBtnAbsen.removeAttribute('disabled')
           }
 
-          data.message.pelajaran.map(data => {
+          data.message.pelajaran.filter(data => {
             if (dateNow < data.pivot.jam_pulang) {
               jadwalSekarang = data
             }
