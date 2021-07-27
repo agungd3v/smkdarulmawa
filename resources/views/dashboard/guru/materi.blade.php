@@ -7,6 +7,12 @@
   .ck-content {
     height: 320px;
   }
+  .btn .badge:not(:last-child) {
+    margin-right: 0;
+  }
+  .btn .badge:not(:first-child) {
+    margin-left: 0
+  }
 </style>
 @endpush
 
@@ -85,20 +91,19 @@
                     @foreach ($guru->pelajaran as $pelajaran)
                       <tr>
                         <th scope="row">{{ $pelajaran->nama_pelajaran }}</th>
-                        <td>
+                        <td class="p-0">
                           <table class="table align-items-center">
                             <tbody class="list">
                               @foreach ($pelajaran->materi as $materi)
                                 <tr>
-                                  <td class="border-top-0 py-0">
-                                    <button type="button" class="btn btn-sm btn-default">
-                                      <span>{{ $materi->judul }}</span>
-                                      <span class="badge badge-primary">{{ date('d / m / Y', strtotime($materi->created_at)) }}</span>
-                                    </button>
+                                  <td class="py-0 w-100">
+                                    <span class="mr-1">{{ $materi->judul }}</span>
                                   </td>
-                                </tr>
-                                <tr>
-                                  <td class="pt-1 pb-0 border-top-0"></td>
+                                  <td>
+                                    <span class="badge badge-primary" style="cursor: pointer" onclick="viewMateri({{ $materi->id }})">View Materi</span>
+                                    <span class="badge badge-success" style="cursor: pointer" onclick="editMateri({{ $materi }})">Edit Materi</span>
+                                    <span class="badge badge-danger" style="cursor: pointer" onclick="deleteMateri({{ $materi->id }})">Delete Materi</span>  
+                                  </td>
                                 </tr>
                               @endforeach
                             </tbody>
@@ -152,6 +157,42 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="editMateri" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Form Update Materi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ route('guru.materi.post') }}" method="POST">
+        <div class="modal-body py-0">
+          @csrf
+          <div class="form-group mb-2">
+            <label for="pelajaran">Pelajaran</label>
+            <select name="pelajaran_id" id="pelajaran" class="custom-select">
+              <option value="" selected hidden>Pilih Pelajaran</option>
+              @foreach ($pelajarans as $pelajaran)
+                <option value="{{ $pelajaran->id }}">{{ $pelajaran->nama_pelajaran }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group mb-4">
+            <label for="judul">Judul Materi</label>
+            <input type="text" class="form-control" name="judul">
+          </div>
+          <div class="form-group mb-2">
+            <textarea id="materiEdit" name="materi"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('js')
@@ -165,6 +206,23 @@
     }).catch(err => {
       console.error(err)
     })
+    ClassicEditor.create(document.getElementById('materiEdit'), {
+      toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'insertTable' ]
+    }).then(editor => {
+      editor.model.document.on('change:data', () => {})
+    }).catch(err => {
+      console.error(err)
+    })
   })
+  function editMateri(value) {
+    $('#editMateri').modal('show')
+    console.log(value)
+  }
+  function viewMateri(value) {
+    console.log(value)
+  }
+  function deleteMateri(value) {
+    console.log(value)
+  }
 </script>
 @endpush

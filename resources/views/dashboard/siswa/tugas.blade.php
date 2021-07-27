@@ -97,7 +97,7 @@
               <div class="col-12">
                 <div class="card mb-3">
                   <div class="card-body">
-                    <h2 class="mb-0 text-center text-orange">Materi pelajar ini belum ada</h2>
+                    <h2 class="mb-0 text-center text-orange">Tugas kosong</h2>
                   </div>
                 </div>
               </div>

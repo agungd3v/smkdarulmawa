@@ -185,24 +185,24 @@
             jadwalSekarang = data
           }
         })
+        
+        if (jadwalSekarang) {
+          if (dateNow < masuk || dateNow > pulang) {
+            elBtnAbsen.setAttribute('disabled', true)
+          } else {
+            elMasukPulang.classList.remove('d-none')
+            const splitJamMasuk = jadwalSekarang.pivot.jam_masuk.split(':')
+            const splitJamPulang = jadwalSekarang.pivot.jam_pulang.split(':')
+            elMasuk.textContent = splitJamMasuk[0] + ':' + splitJamMasuk[1]
+            elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
+            elPelajaranId.value = jadwalSekarang.id;
+            elPelajaran.textContent = jadwalSekarang.nama_pelajaran
+            
+            elBtnAbsen.removeAttribute('disabled')
+          }
+        }
       } else {
         elPelajaran.textContent = data.message
-      }
-
-      if (jadwalSekarang) {
-        if (dateNow < masuk || dateNow > pulang) {
-          elBtnAbsen.setAttribute('disabled', true)
-        } else {
-          elMasukPulang.classList.remove('d-none')
-          const splitJamMasuk = jadwalSekarang.pivot.jam_masuk.split(':')
-          const splitJamPulang = jadwalSekarang.pivot.jam_pulang.split(':')
-          elMasuk.textContent = splitJamMasuk[0] + ':' + splitJamMasuk[1]
-          elPulang.textContent = splitJamPulang[0] + ':' + splitJamPulang[1]
-          elPelajaranId.value = jadwalSekarang.id;
-          elPelajaran.textContent = jadwalSekarang.nama_pelajaran
-          
-          elBtnAbsen.removeAttribute('disabled')
-        }
       }
     }).catch(err => {
       console.error(err)
