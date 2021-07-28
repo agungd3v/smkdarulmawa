@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Jadwal;
+use App\Pelajaran;
 use App\User;
 
 class DashboardController extends Controller
@@ -26,6 +27,15 @@ class DashboardController extends Controller
         return response()->json([
             'status' => $user ? true : false,
             'message' => $user ? $user : 'Tidak ditukan adanya siswa'
+        ]);
+    }
+
+    public function tugas(Request $request) {
+        $pelajaran = Pelajaran::with(['tugas'])->where('id', $request->pelajaran)->first();
+
+        return response()->json([
+            'status' => $pelajaran ? true : false,
+            'message' => $pelajaran ? $pelajaran : 'Tugas dalam pelajaran ini tidak ditemukan'
         ]);
     }
 }

@@ -69,12 +69,19 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/absen', 'AdminController@absen')->name('admin.absen');
         // End Absen Crud
 
+        // Nilai Crud
         Route::get('/nilai', 'AdminController@nilai')->name('admin.nilai');
+        // End Nilai Crud
 
         Route::get('/absenreport', function() {
             return redirect()->route('admin.absen');
         });
         Route::post('/absenreport', 'AdminController@reportAbsen')->name('admin.report.absen');
+
+        Route::get('/nilaireport', function() {
+            return redirect()->route('admin.nilai');
+        });
+        Route::post('/nilaireport', 'AdminController@reportNilai')->name('admin.report.nilai');
     });
     // End Controller dashboard admin
 
@@ -99,6 +106,11 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
             return redirect()->route('guru.absen');
         });
         Route::post('/absenreport', 'GuruController@reportAbsen')->name('guru.report.absen');
+        
+        Route::get('/nilaireport', function() {
+            return redirect()->route('guru.tugas');
+        });
+        Route::post('/nilaireport', 'GuruController@reportNilai')->name('guru.report.nilai');
     });
     // End Controller dashboard guru
 

@@ -7,18 +7,24 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header border-0">
-          {{-- <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <h3 class="mb-0">Table Absensi</h3>
-            <form action="{{ route('admin.report.absen') }}" method="POST" class="mb-0">
+          <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <h3 class="mb-0">Table Nilai</h3>
+            <form action="{{ route('admin.report.nilai') }}" method="POST" class="mb-0">
               @csrf
               <div class="d-flex align-items-end flex-wrap">
                 <div class="form-group mb-0 mr-2 mt-2">
                   <label for="pelajaran" class="text-sm">Pelajaran</label>
-                  <select name="pelajaran" id="pelajaran" class="form-control form-control-sm">
+                  <select name="pelajaran" id="pelajaran" class="form-control form-control-sm" onchange="showTugas(this)">
                     <option value="" selected hidden>Pilih Pelajaran&nbsp;&nbsp;&nbsp;</option>
                     @foreach ($pelajarans as $pelajaran)
                       <option value="{{ $pelajaran->id }}">{{ $pelajaran->nama_pelajaran }}</option>
                     @endforeach
+                  </select>
+                </div>
+                <div class="form-group mb-0 mr-2 mt-2">
+                  <label for="tugas" class="text-sm">Tugas</label>
+                  <select name="tugas" id="tugas" class="form-control form-control-sm">
+                    <option value="" selected hidden>Pilih Tugas&nbsp;&nbsp;&nbsp;</option>
                   </select>
                 </div>
                 <div class="form-group mb-0 mr-2 mt-2">
@@ -34,7 +40,7 @@
                 </div>
               </div>
             </form>
-          </div> --}}
+          </div>
         </div>
         <div class="table-responsive">
           <table class="table align-items-center">
@@ -53,7 +59,7 @@
                   <th scope="row">{{ $loop->iteration }}</th>
                   <td style="width: 100%">{{ $jawaban->user->name }}</td>
                   <td>{{ $jawaban->tugas->pelajaran->nama_pelajaran }} ({{ $jawaban->tugas->pelajaran->guru->name }})</td>
-                  <td>{{ date('d/m/Y', strtotime($jawaban->created_at)) }}</td>
+                  <td>{{ date('d/m/Y', strtotime($jawaban->tugas->created_at)) }}</td>
                   <td>{{ $jawaban->nilai ? $jawaban->nilai : 0 }}</td>
                 </tr>
               @empty
@@ -69,3 +75,30 @@
     </div>
   </div>
 @endsection
+
+@push('js')
+<script>
+  function showTugas(el) {
+    const elTugas = document.getElementById('tugas')
+
+    fetch('/api/dashboard/tugas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ pelajaran: el.value })
+    }).then(res => res.json()).then(data => {
+      if (data.status) {
+        elTugas.innerHTML = '<option value="" selected hidden>Pilih Tugas&nbsp;&nbsp;&nbsp;</option>'
+        data.message.tugas.forEach(vl => {
+          elTugas.innerHTML += `<option value="${vl.id}">${formatDate(vl.created_at)}</option>`
+        })
+      }
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+  function formatDate(mydate) {
+    const date = new Date(mydate)
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+  }
+</script>
+@endpush

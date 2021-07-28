@@ -250,4 +250,43 @@ class GuruController extends Controller
         }
 
     }
+
+    public function reportNilai(Request $request) {
+        $tugas = Tugas::with('jawaban')->where('id', $request->tugas)->first();
+        $from = null;
+        $to = null;
+        if ($tugas) {
+            if ($request->from == null && $request->to == null) {
+                $jawabans = Jawaban::where('tugas_id', $tugas->id)->orderBy('nilai', 'desc')->get();
+            } else {
+                if ($request->from != null && $request->to == null) {
+                    $from = date('d/m/Y', strtotime($request->from));
+                    $jawabans = Jawaban::where('tugas_id', $tugas->id)
+                                    ->where('created_at', '>', $request->from)
+                                    ->orderBy('nilai', 'desc')
+                                    ->get();
+                } elseif ($request->to != null && $request->from == null) {
+                    $to = date('d/m/Y', strtotime($request->to));
+                    $jawabans = Jawaban::where('tugas_id', $tugas->id)
+                                    ->where('created_at', '<', $request->to)
+                                    ->orderBy('nilai', 'desc')
+                                    ->get();
+                } else {
+                    $from = date('d/m/Y', strtotime($request->from));
+                    $to = date('d/m/Y', strtotime($request->to));
+                    $jawabans = Jawaban::where('tugas_id', $tugas->id)
+                                    ->whereBetween('created_at', [$request->from, $request->to])
+                                    ->orderBy('nilai', 'desc')
+                                    ->get();
+                }
+            }
+
+            $pdf = PDF::loadview('report.nilai', compact('tugas', 'jawabans', 'from', 'to'))->setPaper('A4', 'potrait');
+            return $pdf->stream(
+                "Report Nilai" . ($from || $to ? " - " : "") . ($from && $to ? "($from - " : $from) . ($from && $to ? "$to)" : $to)
+            );
+        } else {
+            return redirect()->route('guru.tugas')->with('errorMessage', 'Mohon pilih pelajaran terlebih dahulu!');
+        }
+    }
 }

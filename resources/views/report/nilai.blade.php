@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Report Absen {{ $from || $to ? "-" : "" }} {{ $from && $to ? "($from" : $from }} {{ $from && $to ? '-' : '' }} {{ $from && $to ? "$to)" : $to }}</title>
+  <title>Report Nilai {{ $from || $to ? "-" : "" }} {{ $from && $to ? "($from" : $from }} {{ $from && $to ? '-' : '' }} {{ $from && $to ? "$to)" : $to }}</title>
   <style>
     table, tr, th, td {
       text-align: left;
@@ -18,11 +18,11 @@
   <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-start">
     <div>
       <h2 style="margin-bottom: 0">Pelajaran</h2>
-      <span>{{ $pelajaran->nama_pelajaran }}</span>
+      <span>{{ $tugas->pelajaran->nama_pelajaran }}</span>
     </div>
     <div style="float: right">
       <h2 style="margin-bottom: 0">Guru</h2>
-      <span>{{ $pelajaran->guru->name }}</span>
+      <span>{{ $tugas->pelajaran->guru->name }}</span>
     </div>
   </div>
   @if ($from || $to)
@@ -34,15 +34,15 @@
       <tr>
         <th style="text-align: center; background: #dae8de">No</th>
         <th style="width: 100%; background: #dae8de">Nama Siswa</th>
-        <th style="width: 100%; background: #dae8de">Status Kehadiran</th>
+        <th style="width: 100%; background: #dae8de">Nilai</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($absens as $absen)
+      @foreach ($jawabans as $jawaban)
         <tr>
           <th style="text-align: center">{{ $loop->iteration }}</th>
-          <td>{{ $absen->user->name }}</td>
-          <td>{{ $absen->status }}</td>
+          <td>{{ $jawaban->user->name }}</td>
+          <td>{{ $jawaban->nilai }}</td>
         </tr>
       @endforeach
     </tbody>

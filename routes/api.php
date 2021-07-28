@@ -21,4 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'dashboard', 'namespace' => 'Api'], function() {
     Route::get('/jadwal', 'DashboardController@jadwal');
     Route::get('/siswa', 'DashboardController@siswa');
+    Route::post('/tugas', 'DashboardController@tugas');
 });
