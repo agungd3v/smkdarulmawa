@@ -106,7 +106,7 @@ class GuruController extends Controller
             $materi->materi = $request->materi;
             $materi->save();
 
-            return redirect()->route('guru.materi')->with('berhasil', 'Berhasil menambahkan materi pelajaran '. $pelajaran->nama_pelajaran);
+            return redirect()->route('guru.materi')->with('berhasil', 'Berhasil memperbarui materi pelajaran');
         } else {
             return redirect()->route('guru.materi')->with('errorMessage', 'Pelajaran tidak dikenali!');
         }
@@ -154,6 +154,29 @@ class GuruController extends Controller
         return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil menambahkan tugas pada pelajaran '. $pelajaran->nama_pelajaran);
     }
 
+    public function tugasUpdate(Request $request) {
+        $request->validate([
+            'tugas_id' => 'required',
+            'pelajaran_id' => 'required',
+            'soal' => 'required',
+            'deadline' => 'required'
+        ]);
+
+        $pelajaran = Pelajaran::find($request->pelajaran_id);
+        $tugas = Tugas::find($request->tugas_id);
+
+        if ($tugas) {
+            $tugas->pelajaran_id = $pelajaran->id;
+            $tugas->soal = $request->soal;
+            $tugas->deadline = $request->deadline;
+            $tugas->save();
+
+            return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil memperbarui tugas');
+        } else {
+            return redirect()->route('guru.tugas')->with('errorMessage', 'Aksi yang kamu lakukan tidak dikenali oleh sistem kami');
+        }
+    }
+
     public function tugasPenilaian(Request $request) {
         $request->validate([
             'menilai' => 'required|numeric'
@@ -168,6 +191,21 @@ class GuruController extends Controller
         $jawaban->save();
 
         return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil memberikan nilai '. $jawaban->nilai .' untuk siswa '. $jawaban->user->name);
+    }
+
+    public function tugasDelete(Request $request) {
+        $request->validate([
+            'tugas_id' => 'required'
+        ]);
+
+        $tugas = Tugas::find($request->tugas_id);
+        if ($tugas) {
+            $tugas->delete();
+
+            return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil menghapus materi');
+        } else {
+            return redirect()->route('guru.tugas')->with('errorMessage', 'Tugas tidak dikenali!');
+        }
     }
 
     public function reportAbsen(Request $request) {

@@ -85,17 +85,25 @@
                     @foreach ($guru->pelajaran as $pelajaran)
                       <tr>
                         <th scope="row">{{ $pelajaran->nama_pelajaran }}</th>
-                        <td>
-                          <div class="d-flex flex-wrap">
-                            @forelse ($pelajaran->tugas as $tugas)
-                              <button type="button" class="btn btn-sm btn-default mb-2" onclick="openPenilaian({{ $tugas->jawaban }}, {{ $tugas }})">
-                                <span>{{ date('d/m/Y', strtotime($tugas->created_at)) }}</span>
-                                <span class="badge badge-primary">Jawaban - {{ count($tugas->jawaban) }}</span>
-                              </button>
-                            @empty
-                              <span class="badge badge-lg badge-warning">Belum ada tugas untuk pelajaran ini</span>
-                            @endforelse
-                          </div>
+                        <td class="p-0">
+                          <table class="table align-items-center">
+                            <tbody class="list">
+                              @forelse ($pelajaran->tugas as $tugas)
+                                <tr>
+                                  <td class="py-0 w-100">
+                                    <span>{{ date('d/m/Y', strtotime($tugas->created_at)) }} - {{ count($tugas->jawaban) }}</span>
+                                  </td>
+                                  <td>
+                                    <span class="badge badge-primary" style="cursor: pointer" onclick="openPenilaian({{ $tugas->jawaban }}, {{ $tugas }})">Beri Nilai</span>
+                                    <span class="badge badge-success" style="cursor: pointer" onclick="updateTugas({{ $tugas->jawaban }}, {{ $tugas }})">Edit Tugas</span>
+                                    <span class="badge badge-danger" style="cursor: pointer" onclick="deleteTugas({{ $tugas->id }})">Delete Tugas</span>
+                                  </td>
+                                @empty
+                                  <span class="badge badge-lg badge-warning">Belum ada tugas</span>
+                                @endforelse
+                              </tr>
+                            </tbody>
+                          </table>
                         </td>
                       </tr>
                     @endforeach
@@ -155,7 +163,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Form Tambah Materi</h5>
+        <h5 class="modal-title">Form Tambah Tugas</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -187,6 +195,48 @@
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Simpan Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="openTugasUpdate" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Form Update Tugas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="{{ route('guru.tugas.update') }}" method="POST">
+        <div class="modal-body py-0">
+          @csrf
+          <input type="hidden" name="tugas_id" id="tugas_id" value="xxx">
+          <div class="form-group mb-2">
+            <label for="pelajaranEdit">Pelajaran</label>
+            <select name="pelajaran_id" id="pelajaranEdit" class="custom-select">
+              <option value="" selected hidden>Pilih Pelajaran</option>
+              @foreach ($guru->pelajaran as $pelajaran)
+                <option value="{{ $pelajaran->id }}">{{ $pelajaran->nama_pelajaran }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group mb-4">
+            <label for="deadline">Deadline</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+              </div>
+              <input type="date" min="{{ date('Y-m-d', strtotime(now())) }}" class="form-control" name="deadline" id="editdeadline">
+            </div>
+          </div>
+          <div class="form-group mb-2 tugasedit">
+            <textarea id="soaledit" name="soal"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Update Data</button>
         </div>
       </form>
     </div>
@@ -227,6 +277,33 @@
           <button type="submit" class="btn btn-primary">Simpan Data</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteTugas" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+  <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+    <div class="modal-content bg-gradient-danger">
+      <div class="modal-header">
+        <h6 class="modal-title">Konfirmasi</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="py-3 text-center">
+          <i class="ni ni-bell-55 ni-3x"></i>
+          <h4 class="heading mt-4">Peringatan!</h4>
+          <p>Jika kamu menekan ya maka tugas ini akan terhapus beserta nilai di dalamnya.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form action="{{ route('guru.tugas.delete') }}" method="POST" class="mb-0">
+          @csrf
+          <input type="hidden" name="tugas_id" id="deleteId" value="xxx">
+          <button type="submit" class="btn btn-white">Ya, Hapus Data</button>
+        </form>
+        <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Tidak</button>
+      </div>  
     </div>
   </div>
 </div>
@@ -285,6 +362,36 @@
         }
       })
     }
+  }
+  function updateTugas(jawaban, tugas) {
+    const elTugas = document.getElementById('tugas_id')
+    const elPelajaran = document.getElementById('pelajaranEdit')
+    const elDeadline = document.getElementById('editdeadline')
+    const elSoal = document.getElementById('soaledit')
+    const elckTugas = document.querySelector('.tugasedit').querySelectorAll('.ck.ck-reset.ck-editor.ck-rounded-corners')
+
+    elTugas.value = tugas.id
+    elPelajaran.value = tugas.pelajaran_id
+    elDeadline.value = tugas.deadline
+
+    if (elckTugas.length > 0) {
+      elckTugas[0].remove()
+    }
+
+    ClassicEditor.create(document.getElementById('soaledit'), {
+      toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'insertTable' ]
+    }).then(editor => {
+      editor.setData(tugas.soal)
+    }).catch(err => {
+      console.error(err)
+    })
+
+    $('#openTugasUpdate').modal('show')
+  }
+  function deleteTugas(tugasId) {
+    const elDelete = document.getElementById('deleteId')
+    elDelete.value = tugasId
+    $('#deleteTugas').modal('show')
   }
 </script>
 @endpush

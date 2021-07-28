@@ -92,6 +92,8 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         Route::get('/tugas', 'GuruController@tugas')->name('guru.tugas');
         Route::post('/tugas', 'GuruController@tugasPost')->name('guru.tugas.post');
         Route::post('/tugas/penilaian', 'GuruController@tugasPenilaian')->name('guru.tugas.penilaian');
+        Route::post('/tugas/delete', 'GuruController@tugasDelete')->name('guru.tugas.delete');
+        Route::post('/tugas/update', 'GuruController@tugasUpdate')->name('guru.tugas.update');
 
         Route::get('/absenreport', function() {
             return redirect()->route('guru.absen');
