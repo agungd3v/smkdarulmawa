@@ -5,7 +5,7 @@
 @push('css')
 <style>
   .ck-content {
-    height: 320px;
+    height: 220px;
   }
 </style>
 @endpush
@@ -91,7 +91,14 @@
                               @forelse ($pelajaran->tugas as $tugas)
                                 <tr>
                                   <td class="py-0 w-100">
-                                    <span>{{ date('d/m/Y', strtotime($tugas->created_at)) }} - {{ count($tugas->jawaban) }}</span>
+                                    <div class="d-flex align-items-center">
+                                      <span>{{ date('d/m/Y', strtotime($tugas->created_at)) }} - {{ count($tugas->jawaban) }}</span>
+                                      @if ($tugas->document)
+                                        <span class="ml-3" style="font-size: 16px; cursor: pointer;" onclick="showDocument('{{ $tugas->document }}')">
+                                          <i class="ni ni-archive-2 text-warning"></i>
+                                        </span>
+                                      @endif
+                                    </div>
                                   </td>
                                   <td>
                                     <span class="badge badge-primary" style="cursor: pointer" onclick="openPenilaian({{ $tugas->jawaban }}, {{ $tugas }})">Beri Nilai</span>
@@ -199,7 +206,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('guru.tugas.post') }}" method="POST">
+      <form action="{{ route('guru.tugas.post') }}" method="POST" enctype="multipart/form-data">
         <div class="modal-body py-0">
           @csrf
           <div class="form-group mb-2">
@@ -220,8 +227,12 @@
               <input type="date" min="{{ date('Y-m-d', strtotime(now())) }}" class="form-control" name="deadline" id="deadline">
             </div>
           </div>
-          <div class="form-group mb-2">
+          <div class="form-group mb-3">
             <textarea id="soal" name="soal"></textarea>
+          </div>
+          <div class="form-group mb-2">
+            <label for="document">Document</label>
+            <input type="file" class="form-control" name="document">
           </div>
         </div>
         <div class="modal-footer">
@@ -240,7 +251,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('guru.tugas.update') }}" method="POST">
+      <form action="{{ route('guru.tugas.update') }}" method="POST" enctype="multipart/form-data">
         <div class="modal-body py-0">
           @csrf
           <input type="hidden" name="tugas_id" id="tugas_id" value="xxx">
@@ -262,8 +273,12 @@
               <input type="date" min="{{ date('Y-m-d', strtotime(now())) }}" class="form-control" name="deadline" id="editdeadline">
             </div>
           </div>
-          <div class="form-group mb-2 tugasedit">
+          <div class="form-group mb-3 tugasedit">
             <textarea id="soaledit" name="soal"></textarea>
+          </div>
+          <div class="form-group mb-2">
+            <label for="document">Document</label>
+            <input type="file" class="form-control" name="document">
           </div>
         </div>
         <div class="modal-footer">
@@ -445,6 +460,9 @@
   function formatDate(mydate) {
     const date = new Date(mydate)
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+  }
+  function showDocument(docUrl) {
+    window.open(`/${docUrl}`)
   }
 </script>
 @endpush

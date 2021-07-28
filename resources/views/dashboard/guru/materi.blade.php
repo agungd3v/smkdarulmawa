@@ -5,7 +5,7 @@
 @push('css')
 <style>
   .ck-content {
-    height: 320px;
+    height: 220px;
   }
   .btn .badge:not(:last-child) {
     margin-right: 0;
@@ -97,7 +97,14 @@
                               @forelse ($pelajaran->materi as $materi)
                                 <tr>
                                   <td class="py-0 w-100">
-                                    <span class="mr-1">{{ $materi->judul }}</span>
+                                    <div class="d-flex align-items-center">
+                                      <span class="mr-1">{{ $materi->judul }}</span>
+                                      @if ($materi->document)
+                                        <span class="ml-2" style="font-size: 16px; cursor: pointer;" onclick="showDocument('{{ $materi->document }}')">
+                                          <i class="ni ni-archive-2 text-warning"></i>
+                                        </span>
+                                      @endif
+                                    </div>
                                   </td>
                                   <td>
                                     <span class="badge badge-primary" style="cursor: pointer" onclick="viewMateri('{{ route('guru.materi.view', $materi->id) }}')">View Materi</span>
@@ -136,7 +143,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('guru.materi.post') }}" method="POST">
+      <form action="{{ route('guru.materi.post') }}" method="POST" enctype="multipart/form-data">
         <div class="modal-body py-0">
           @csrf
           <div class="form-group mb-2">
@@ -152,8 +159,12 @@
             <label for="judul">Judul Materi</label>
             <input type="text" class="form-control" name="judul">
           </div>
-          <div class="form-group mb-2">
+          <div class="form-group mb-3">
             <textarea id="materi" name="materi"></textarea>
+          </div>
+          <div class="form-group mb-2">
+            <label for="document">Document</label>
+            <input type="file" class="form-control" name="document">
           </div>
         </div>
         <div class="modal-footer">
@@ -172,7 +183,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('guru.materi.update') }}" method="POST">
+      <form action="{{ route('guru.materi.update') }}" method="POST" enctype="multipart/form-data">
         <div class="modal-body py-0">
           @csrf
           <input type="hidden" id="editId" name="materi_id" value="xxx">
@@ -189,8 +200,12 @@
             <label for="judulEdit">Judul Materi</label>
             <input type="text" id="judulEdit" class="form-control" name="judul">
           </div>
-          <div class="form-group mb-2 editmateri">
+          <div class="form-group mb-3 editmateri">
             <textarea id="materiEdit" name="materi"></textarea>
+          </div>
+          <div class="form-group mb-2">
+            <label for="document">Document</label>
+            <input type="file" class="form-control" name="document">
           </div>
         </div>
         <div class="modal-footer">
@@ -274,6 +289,9 @@
     elDeleteId.value = materiId
 
     $('#deleteMateri').modal('show')
+  }
+  function showDocument(docUrl) {
+    window.open(`/${docUrl}`)
   }
 </script>
 @endpush

@@ -13,6 +13,14 @@
       </div>
       <div class="card-body">
         {!! $materi->materi !!}
+        @if ($materi->document)
+          <div class="mt-5">
+            <h2>Document Available</h2>
+            <span style="font-size: 36px; cursor: pointer;" onclick="showDocument('{{ $materi->document }}')">
+              <i class="ni ni-archive-2 text-warning"></i>
+            </span>
+          </div>
+        @endif
       </div>
       <div class="card-footer">
         <h3 class="mb-4">{{ count($materi->komentar) }} Komentar</h3>
@@ -65,3 +73,11 @@
   </div>
 </div>
 @endsection
+
+@push('js')
+<script>
+  function showDocument(docUrl) {
+    window.open(`/${docUrl}`)
+  }
+</script>
+@endpush

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Jadwal;
@@ -76,6 +77,20 @@ class GuruController extends Controller
         $materi = new Materi();
         
         if ($pelajaran) {
+            if ($request->hasFile('document')) {
+                $document = $request->document;
+                $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                $pdfFormat = 'application/pdf';
+    
+                if ($document->getClientMimeType() == $wordFormat || $document->getClientMimeType() == $pdfFormat) {
+                    $path = $request->file('document')->store('public/materi');
+                    $sendPath = explode('/', $path);
+                    $materi->document = 'storage/'. $sendPath[1] .'/'. $sendPath[2];
+                } else {
+                    return redirect()->route('guru.materi')->with('errorMessage', 'Hanya document Microsoft Word dan Pdf yang diterima');
+                }
+            }
+
             $materi->guru_id = $user->id;
             $materi->pelajaran_id = $pelajaran->id;
             $materi->judul = $request->judul;
@@ -101,6 +116,25 @@ class GuruController extends Controller
         $materi = Materi::where('id', $request->materi_id)->where('guru_id', $user->id)->first();
         
         if ($pelajaran && $materi) {
+            if ($request->hasFile('document')) {
+                $document = $request->document;
+                $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                $pdfFormat = 'application/pdf';
+
+                if ($materi->document) {
+                    $pathFile = explode('/', $materi->document);
+                    Storage::delete('public/'. $pathFile[1] .'/'. $pathFile[2]);
+                }
+    
+                if ($document->getClientMimeType() == $wordFormat || $document->getClientMimeType() == $pdfFormat) {
+                    $path = $request->file('document')->store('public/materi');
+                    $sendPath = explode('/', $path);
+                    $materi->document = 'storage/'. $sendPath[1] .'/'. $sendPath[2];
+                } else {
+                    return redirect()->route('guru.materi')->with('errorMessage', 'Update gagal document tidak diterima');
+                }
+            }
+
             $materi->pelajaran_id = $pelajaran->id;
             $materi->judul = $request->judul;
             $materi->materi = $request->materi;
@@ -119,6 +153,11 @@ class GuruController extends Controller
 
         $materi = Materi::find($request->materi_id);
         if ($materi) {
+            if ($materi->document) {
+                $pathFile = explode('/', $materi->document);
+                Storage::delete('public/'. $pathFile[1] .'/'. $pathFile[2]);
+            }
+
             $materi->delete();
 
             return redirect()->route('guru.materi')->with('berhasil', 'Berhasil menghapus materi');
@@ -146,6 +185,21 @@ class GuruController extends Controller
         }
 
         $tugas = new Tugas();
+
+        if ($request->hasFile('document')) {
+            $document = $request->document;
+            $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            $pdfFormat = 'application/pdf';
+
+            if ($document->getClientMimeType() == $wordFormat || $document->getClientMimeType() == $pdfFormat) {
+                $path = $request->file('document')->store('public/tugas');
+                $sendPath = explode('/', $path);
+                $tugas->document = 'storage/'. $sendPath[1] .'/'. $sendPath[2];
+            } else {
+                return redirect()->route('guru.tugas')->with('errorMessage', 'Hanya document Microsoft Word dan Pdf yang diterima');
+            }
+        }
+
         $tugas->pelajaran_id = $pelajaran->id;
         $tugas->soal = $request->soal;
         $tugas->deadline = $request->deadline;
@@ -166,6 +220,25 @@ class GuruController extends Controller
         $tugas = Tugas::find($request->tugas_id);
 
         if ($tugas) {
+            if ($request->hasFile('document')) {
+                $document = $request->document;
+                $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                $pdfFormat = 'application/pdf';
+
+                if ($tugas->document) {
+                    $pathFile = explode('/', $tugas->document);
+                    Storage::delete('public/'. $pathFile[1] .'/'. $pathFile[2]);
+                }
+    
+                if ($document->getClientMimeType() == $wordFormat || $document->getClientMimeType() == $pdfFormat) {
+                    $path = $request->file('document')->store('public/tugas');
+                    $sendPath = explode('/', $path);
+                    $tugas->document = 'storage/'. $sendPath[1] .'/'. $sendPath[2];
+                } else {
+                    return redirect()->route('guru.tugas')->with('errorMessage', 'Update gagal document tidak diterima');
+                }
+            }
+
             $tugas->pelajaran_id = $pelajaran->id;
             $tugas->soal = $request->soal;
             $tugas->deadline = $request->deadline;
@@ -200,6 +273,11 @@ class GuruController extends Controller
 
         $tugas = Tugas::find($request->tugas_id);
         if ($tugas) {
+            if ($tugas->document) {
+                $pathFile = explode('/', $tugas->document);
+                Storage::delete('public/'. $pathFile[1] .'/'. $pathFile[2]);
+            }
+
             $tugas->delete();
 
             return redirect()->route('guru.tugas')->with('berhasil', 'Berhasil menghapus materi');

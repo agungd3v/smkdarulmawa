@@ -88,6 +88,12 @@
                             <i class="ni ni-align-left-2 text-orange"></i>
                             <span class="text-nowrap ml-2">{{ count($tugas->jawaban) }} Jawaban</span>
                           </p>
+                          @if ($tugas->document)
+                            <p class="mb-0 mt-2 text-sm d-flex align-items-center justify-content-end" style="cursor: pointer;" onclick="showDocument('{{ $tugas->document }}')">
+                              <i class="ni ni-archive-2 text-warning"></i>
+                              <span class="ml-1">Doc</span>
+                            </p>
+                          @endif
                         </div>
                       </div>
                     </div>
@@ -207,6 +213,10 @@
 
     $('#openTugas').modal('show')
     jawabanExist = []
+  }
+
+  function showDocument(docUrl) {
+    window.open(`/${docUrl}`)
   }
 </script>
 @endpush
