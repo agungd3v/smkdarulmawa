@@ -81,6 +81,10 @@ class GuruController extends Controller
                 $document = $request->document;
                 $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
                 $pdfFormat = 'application/pdf';
+
+                if ($document->getSize() > 1000000) {
+                    return redirect()->route('guru.materi')->with('errorMessage', 'Maksimal file 1MB');
+                }
     
                 if ($document->getClientMimeType() == $wordFormat || $document->getClientMimeType() == $pdfFormat) {
                     $path = $request->file('document')->store('public/materi');
@@ -120,6 +124,10 @@ class GuruController extends Controller
                 $document = $request->document;
                 $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
                 $pdfFormat = 'application/pdf';
+
+                if ($document->getSize() > 1000000) {
+                    return redirect()->route('guru.materi')->with('errorMessage', 'Maksimal file 1MB');
+                }
 
                 if ($materi->document) {
                     $pathFile = explode('/', $materi->document);
@@ -191,6 +199,10 @@ class GuruController extends Controller
             $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
             $pdfFormat = 'application/pdf';
 
+            if ($document->getSize() > 1000000) {
+                return redirect()->route('guru.materi')->with('errorMessage', 'Maksimal file 1MB');
+            }
+
             if ($document->getClientMimeType() == $wordFormat || $document->getClientMimeType() == $pdfFormat) {
                 $path = $request->file('document')->store('public/tugas');
                 $sendPath = explode('/', $path);
@@ -224,6 +236,10 @@ class GuruController extends Controller
                 $document = $request->document;
                 $wordFormat = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
                 $pdfFormat = 'application/pdf';
+
+                if ($document->getSize() > 1000000) {
+                    return redirect()->route('guru.materi')->with('errorMessage', 'Maksimal file 1MB');
+                }
 
                 if ($tugas->document) {
                     $pathFile = explode('/', $tugas->document);
