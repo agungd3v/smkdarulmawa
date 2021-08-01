@@ -5,18 +5,24 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\User;
 use App\Pelajaran;
 use App\Jadwal;
 use App\Absen;
 use App\Jawaban;
+use App\Materi;
 use App\Tugas;
 use PDF;
 
 class AdminController extends Controller
 {
     public function index() {
-        return view('dashboard.admin.index');
+        $siswa = User::where('role', 'siswa')->whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
+        $guru = User::where('role', 'guru')->whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
+        $pelajaran = Pelajaran::whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
+        $materi = Materi::whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
+        return view('dashboard.admin.index', compact('siswa', 'guru', 'pelajaran', 'materi'));
     }
 
     // Guru
@@ -363,7 +369,6 @@ class AdminController extends Controller
     public function nilai() {
         $pelajarans = Pelajaran::orderBy('nama_pelajaran', 'asc')->get();
         $jawabans = Jawaban::with('user', 'tugas')->orderBy('created_at', 'desc')->paginate(15);
-        // dd($jawabans);
         return view('dashboard.admin.nilai', compact('jawabans', 'pelajarans'));
     }
 
