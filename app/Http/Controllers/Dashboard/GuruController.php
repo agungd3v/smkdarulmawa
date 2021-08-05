@@ -272,7 +272,6 @@ class GuruController extends Controller
         ]);
 
         $jawaban = Jawaban::with('user', 'tugas')->where('siswa_id', $request->siswa_id)->where('tugas_id', $request->tugas_id)->first();
-        dd($request->all());
         if (!$jawaban) {
             return redirect()->route('guru.tugas')->with('errorMessage', 'Sistem tidak mengenali aksi yang ingin kamu lakukan!');
         }
