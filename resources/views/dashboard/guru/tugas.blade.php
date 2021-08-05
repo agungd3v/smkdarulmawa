@@ -300,7 +300,7 @@
       <form action="{{ route('guru.tugas.penilaian') }}" method="POST">
         <div class="modal-body py-0">
           @csrf
-          <input type="hidden" name="tugas_id" id="tugas" value="xxx">
+          <input type="hidden" name="tugas_id" id="tugas_id_update" value="xxx">
           <div class="d-flex flex-column">
             <h2>Soal</h2>
             <div id="soalselected">#####</div>
@@ -373,7 +373,7 @@
     const elSoal = document.getElementById('soalselected')
     const elMenjawab = document.getElementById('jawaban_siswa')
     const elMenilai = document.getElementById('nilai_siswa')
-    const elTugas = document.getElementById('tugas')
+    const elTugas = document.getElementById('tugas_id_update')
     elSoal.innerHTML = tugas.soal
     elTugas.value = tugas.id
     elMenilai.classList.add('d-none')
