@@ -18,10 +18,10 @@ use PDF;
 class AdminController extends Controller
 {
     public function index() {
-        $siswa = User::where('role', 'siswa')->whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
-        $guru = User::where('role', 'guru')->whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
-        $pelajaran = Pelajaran::whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
-        $materi = Materi::whereMonth('created_at', '=', Carbon::now()->subMonth()->month)->count();
+        $siswa = User::where('role', 'siswa')->count();
+        $guru = User::where('role', 'guru')->count();
+        $pelajaran = Pelajaran::count();
+        $materi = Materi::count();
         return view('dashboard.admin.index', compact('siswa', 'guru', 'pelajaran', 'materi'));
     }
 
