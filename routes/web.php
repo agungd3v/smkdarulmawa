@@ -66,11 +66,11 @@ Route::group(['prefix' => 'dashboard', 'namespace' => 'Dashboard'], function() {
         // End Jadwal Crud
 
         // Absen Crud
-        Route::get('/absen', 'AdminController@absen')->name('admin.absen');
+        // Route::get('/absen', 'AdminController@absen')->name('admin.absen');
         // End Absen Crud
 
         // Nilai Crud
-        Route::get('/nilai', 'AdminController@nilai')->name('admin.nilai');
+        // Route::get('/nilai', 'AdminController@nilai')->name('admin.nilai');
         // End Nilai Crud
 
         Route::get('/absenreport', function() {

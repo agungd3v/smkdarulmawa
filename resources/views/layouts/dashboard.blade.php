@@ -57,7 +57,7 @@
                       <span class="nav-link-text">Data Jadwal</span>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a class="nav-link @yield('absen')" href="{{ route('admin.absen') }}">
                       <i class="ni ni-check-bold text-info"></i>
                       <span class="nav-link-text">Data Absen</span>
@@ -68,7 +68,7 @@
                       <i class="ni ni-paper-diploma text-default"></i>
                       <span class="nav-link-text">Data Nilai</span>
                     </a>
-                  </li>
+                  </li> --}}
                 @endif
                 @if (Auth::user()->role === 'guru')
                   <li class="nav-item">
