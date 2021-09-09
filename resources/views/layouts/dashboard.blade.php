@@ -17,13 +17,13 @@
     <div id="app">
       <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
         <div class="scrollbar-inner">
-          <div class="sidenav-header align-items-center mt-5">
-            <img src="{{ asset('assets/img/brand/favicon.png') }}" alt="">
-            <a class="navbar-brand p-0" href="javascript:void(0)">
+          <div class="sidenav-header align-items-center mt-5 px-3">
+            <img src="{{ asset('assets/img/brand/logosmk.jpg') }}" alt="" class="img-fluid">
+            {{-- <a class="navbar-brand p-0" href="javascript:void(0)">
               <h3 class="text-bold">E-Learning</h3>
-            </a>
+            </a> --}}
           </div>
-          <div class="navbar-inner">
+          <div class="navbar-inner" style="margin-top: 150px">
             <div class="collapse navbar-collapse" id="sidenav-collapse-main">
               <ul class="navbar-nav">
                 @if (Auth::user()->role === 'admin')
