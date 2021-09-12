@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Report Nilai {{ $from || $to ? "-" : "" }} {{ $from && $to ? "($from" : $from }} {{ $from && $to ? '-' : '' }} {{ $from && $to ? "$to)" : $to }}</title>
+  <title>Report Nilai</title>
   <style>
     table, tr, th, td {
       text-align: left;
@@ -22,9 +22,9 @@
           <img src="{{ public_path('assets/img/brand/logosmk.jpg') }}" style="width: 80px">
         </td>
         <td style="width: 100%; padding: 0; border: 0">
-          <h4 style="margin: 0; text-align: center">LAPORAN DATA NILAI SISWA SMK WIRATAMA KOTAGAJAH</h4>
-          <h4 style="margin: 0; text-align: center">JL. JENDRAL SUDIRMAN NO. 17, Kec. Kota Gajah Lampung Tengah - Lampung</h4>
-          <h5 style="margin-top: 5px; margin-bottom: 0; text-align: center">Telp 072545866, Email smkdarulmawa@gmail.com</h5>
+          <h4 style="margin: 0; text-align: center">LAPORAN DATA NILAI SISWA SMK DARUL MAWA LAMPUNG TENGAH</h4>
+          <h4 style="margin: 0; text-align: center">Jl. Rawa Sawer Kampung Gaya Baru VI, Kec. Seputih Surabaya Lampung Tengah - Lampung</h4>
+          <h5 style="margin-top: 5px; margin-bottom: 0; text-align: center">Telp 2147483647, Email smkdarulmawa06@gmail.com</h5>
         </td>
       </tr>
       <tr>
@@ -51,19 +51,7 @@
         </td>
       </tr>
     </table>
-    {{-- <div>
-      <h2 style="margin-bottom: 0">Pelajaran</h2>
-      <span>{{ $tugas->pelajaran->nama_pelajaran }}</span>
-    </div>
-    <div style="float: right">
-      <h2 style="margin-bottom: 0">Guru</h2>
-      <span>{{ $tugas->pelajaran->guru->name }}</span>
-    </div> --}}
   </div>
-  {{-- @if ($from || $to)
-    <h2 style="margin-bottom: 0">Periode</h2>
-    <span>{{ $from ? $from : '' }} {{ $from && !$to ? '>' : '' }} {{ $from && $to ? '-' : '' }} {{ !$from && $to ? '<' : '' }} {{ $to ? $to : '' }}</span>
-  @endif --}}
   <table style="width: 100%; margin-top: 0">
     <thead>
       <tr>
@@ -82,5 +70,14 @@
       @endforeach
     </tbody>
   </table>
+  <div style="position: fixed; bottom: 0; margin-left: 570px">
+    <div style="width: 116px; border: 1px solid #000"></div>
+    <span>(
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      &nbsp;
+    )</span>
+  </div>
 </body>
 </html>
