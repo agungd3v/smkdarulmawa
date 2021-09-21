@@ -23,7 +23,7 @@
         </td>
         <td style="width: 100%; padding: 0; border: 0">
           <h4 style="margin: 0; text-align: center">LAPORAN DATA ABSEN SISWA SMK DARUL MAWA LAMPUNG TENGAH</h4>
-          <h4 style="margin: 0; text-align: center">Jl. Rawa Sawer Kampung Gaya Baru VI, Kec. Seputih Surabaya Lampung Tengah - Lampung</h4>
+          <h5 style="margin: 0; text-align: center">Jl. Rawa Sawer Kampung Gaya Baru VI, Kec. Seputih Surabaya Lampung Tengah - Lampung</h5>
           <h5 style="margin-top: 5px; margin-bottom: 0; text-align: center">Telp 2147483647, Email smkdarulmawa06@gmail.com</h5>
         </td>
       </tr>

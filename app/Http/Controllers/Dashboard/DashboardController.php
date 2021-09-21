@@ -9,18 +9,21 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth');
+      $this->middleware('auth');
     }
     public function index() {
-        $user = Auth::user();
+      $user = Auth::user();
+      if ($user) {
         if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+          return redirect()->route('admin.dashboard');
         }
         if ($user->role === 'guru') {
-            return redirect()->route('guru.dashboard');
+          return redirect()->route('guru.dashboard');
         }
         if ($user->role === 'siswa') {
-            return redirect()->route('siswa.dashboard');
+          return redirect()->route('siswa.dashboard');
         }
+      }
+      return redirect('/');
     }
 }

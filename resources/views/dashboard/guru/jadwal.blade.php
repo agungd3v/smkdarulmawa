@@ -9,7 +9,7 @@
       <div class="card-header border-0">
         <div class="d-flex justify-content-between align-items-center">
           <h3 class="mb-0">Table Jadwal Pelajaran</h3>
-          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#openPelajaran">Tambah Jadwal Pelajaran</button>
+          {{-- <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#openPelajaran">Tambah Jadwal Pelajaran</button> --}}
         </div>
       </div>
       <div class="table-responsive">
