@@ -184,6 +184,7 @@ class GuruController extends Controller
         $request->validate([
             'pelajaran_id' => 'required',
             'soal' => 'required',
+            'type' => 'required',
             'deadline' => 'required'
         ]);
         
@@ -214,6 +215,7 @@ class GuruController extends Controller
 
         $tugas->pelajaran_id = $pelajaran->id;
         $tugas->soal = $request->soal;
+        $tugas->type = $request->type;
         $tugas->deadline = $request->deadline;
         $tugas->save();
 
@@ -225,6 +227,7 @@ class GuruController extends Controller
             'tugas_id' => 'required',
             'pelajaran_id' => 'required',
             'soal' => 'required',
+            'type' => 'required',
             'deadline' => 'required'
         ]);
 
@@ -257,6 +260,7 @@ class GuruController extends Controller
 
             $tugas->pelajaran_id = $pelajaran->id;
             $tugas->soal = $request->soal;
+            $tugas->type = $request->type;
             $tugas->deadline = $request->deadline;
             $tugas->save();
 

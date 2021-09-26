@@ -129,7 +129,7 @@
     <div class="card">
       <div class="card-header border-0">
         <div class="d-flex justify-content-between align-items-center flex-wrap">
-          <h3 class="mb-0">Table Absensi</h3>
+          <h3 class="mb-0">Table Penilaian</h3>
           <form action="{{ route('guru.report.nilai') }}" method="POST" class="mb-0">
             @csrf
             <div class="d-flex align-items-end flex-wrap">
@@ -218,6 +218,15 @@
               @endforeach
             </select>
           </div>
+          <div class="form-group mb-2">
+            <label for="type">Tugas Type</label>
+            <select name="type" id="type" class="custom-select">
+              <option value="" selected hidden>Pilih type</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
           <div class="form-group mb-4">
             <label for="deadline">Deadline</label>
             <div class="input-group">
@@ -262,6 +271,15 @@
               @foreach ($guru->pelajaran as $pelajaran)
                 <option value="{{ $pelajaran->id }}">{{ $pelajaran->nama_pelajaran }}</option>
               @endforeach
+            </select>
+          </div>
+          <div class="form-group mb-2">
+            <label for="type">Tugas Type</label>
+            <select name="type" id="typeedit" class="custom-select">
+              <option value="" selected hidden>Pilih type</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
             </select>
           </div>
           <div class="form-group mb-4">
@@ -412,12 +430,14 @@
   function updateTugas(jawaban, tugas) {
     const elTugas = document.getElementById('tugas_id')
     const elPelajaran = document.getElementById('pelajaranEdit')
+    const elType = document.getElementById('typeedit')
     const elDeadline = document.getElementById('editdeadline')
     const elSoal = document.getElementById('soaledit')
     const elckTugas = document.querySelector('.tugasedit').querySelectorAll('.ck.ck-reset.ck-editor.ck-rounded-corners')
 
     elTugas.value = tugas.id
     elPelajaran.value = tugas.pelajaran_id
+    elType.value = tugas.type
     elDeadline.value = tugas.deadline
 
     if (elckTugas.length > 0) {

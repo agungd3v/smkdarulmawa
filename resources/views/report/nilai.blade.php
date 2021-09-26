@@ -50,6 +50,14 @@
           <span>{{ $tugas->deadline }}</span>
         </td>
       </tr>
+      @if ($tugas->type)
+        <tr>
+          <td colspan="2" style="border: 0; padding: 0; padding-top: 5px">
+            <span>Type Tugas: </span>
+            <span style="text-transform: capitalize">{{ $tugas->type }}</span>
+          </td>
+        </tr>
+      @endif
     </table>
   </div>
   <table style="width: 100%; margin-top: 0">
