@@ -177,13 +177,15 @@
           <tbody class="list">  
             @forelse ($jawabans as $jawaban)
               @if ($jawaban->tugas->pelajaran->guru->id == Auth::user()->id)
-                <tr>
-                  <th scope="row">{{ $loop->iteration }}</th>
-                  <td style="width: 100%">{{ $jawaban->user ? $jawaban->user->name : '' }}</td>
-                  <td>{{ $jawaban->tugas->pelajaran->nama_pelajaran }} ({{ $jawaban->tugas->pelajaran->guru->name }})</td>
-                  <td>{{ date('d/m/Y', strtotime($jawaban->tugas->created_at)) }}</td>
-                  <td>{{ $jawaban->nilai ? $jawaban->nilai : 0 }}</td>
-                </tr>
+                @if ($jawaban->user)
+                  <tr>
+                    <th scope="row">{{ $loop->iteration }}</th>
+                    <td style="width: 100%">{{ $jawaban->user->name }}</td>
+                    <td>{{ $jawaban->tugas->pelajaran->nama_pelajaran }} ({{ $jawaban->tugas->pelajaran->guru->name }})</td>
+                    <td>{{ date('d/m/Y', strtotime($jawaban->tugas->created_at)) }}</td>
+                    <td>{{ $jawaban->nilai ? $jawaban->nilai : 0 }}</td>
+                  </tr>
+                @endif
               @endif
             @empty
               <tr>

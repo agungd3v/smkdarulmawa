@@ -70,11 +70,13 @@
     </thead>
     <tbody>
       @foreach ($jawabans as $jawaban)
-        <tr>
-          <th style="text-align: center">{{ $loop->iteration }}</th>
-          <td>{{ $jawaban->user->name }}</td>
-          <td>{{ $jawaban->nilai }}</td>
-        </tr>
+        @if ($jawaban->user)
+          <tr>
+            <th style="text-align: center">{{ $loop->iteration }}</th>
+            <td>{{ $jawaban->user->name }}</td>
+            <td>{{ $jawaban->nilai }}</td>
+          </tr>
+        @endif
       @endforeach
     </tbody>
   </table>
