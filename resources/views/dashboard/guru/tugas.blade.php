@@ -92,7 +92,13 @@
                                 <tr>
                                   <td class="py-0 w-100">
                                     <div class="d-flex align-items-center">
-                                      <span>{{ date('d/m/Y', strtotime($tugas->created_at)) }} - {{ count($tugas->jawaban) }}</span>
+                                      @php
+                                        $jwb = 0;
+                                        foreach ($tugas->jawaban as $key => $jawaban) {
+                                          if ($jawaban->user) $jwb++;
+                                        }
+                                      @endphp
+                                      <span>{{ date('d/m/Y', strtotime($tugas->created_at)) }} - {{ $jwb }}</span>
                                       @if ($tugas->document)
                                         <span class="ml-3" style="font-size: 16px; cursor: pointer;" onclick="showDocument('{{ $tugas->document }}')">
                                           <i class="ni ni-archive-2 text-warning"></i>
