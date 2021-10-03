@@ -97,7 +97,7 @@
           </thead>
           <tbody class="list">  
             @forelse ($absens as $absen)
-              @if ($absen->user->id == Auth::user()->id)
+              @if ($absen->user && $absen->user->id == Auth::user()->id)
                 <tr>
                   <th scope="row">{{ $loop->iteration }}</th>
                   <td>{{ $absen->user->name }}</td>
