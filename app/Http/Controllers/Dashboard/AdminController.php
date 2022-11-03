@@ -13,10 +13,18 @@ use App\Absen;
 use App\Jawaban;
 use App\Materi;
 use App\Tugas;
-use PDF;
+use Barryvdh\DomPDF\PDF;
+use App\Repository\GuruRepository;
 
 class AdminController extends Controller
 {
+    protected $guruRepository;
+
+    public function __construct(GuruRepository $guruRepository)
+    {
+        $this->guruRepository = $guruRepository;
+    }
+
     public function index() {
         $siswa = User::where('role', 'siswa')->count();
         $guru = User::where('role', 'guru')->count();
@@ -38,13 +46,8 @@ class AdminController extends Controller
             'email' => 'required|email|unique:users,email',
         ]);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->nidn = intval($request->nidn);
-        $user->email = $request->email;
-        $user->password = Hash::make('smkdarulmawa');
-        $user->role = 'guru';
-        $user->save();
+        $storeGuru = $this->guruRepository->storeGuru($request->all());
+        if (!$storeGuru) return response()->json(['message' => 'Error store data'], 500);
 
         return redirect()->route('admin.guru')->with('berhasil', 'Data guru '. $request->name .' berhasil ditambahkan');
     }
